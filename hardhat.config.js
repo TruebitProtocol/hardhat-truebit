@@ -1,7 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
-//require('dotenv').config();
 require('dotenv').config({ path: require('find-config')('process.env') });
-
 require("./truebit");
 
 
@@ -24,8 +22,7 @@ task("accounts", "Prints the  of accounts", async (taskArgs, hre) => {
 const CHAIN_IDS = {
   hardhat: 31337, // chain ID for hardhat testing
 };
-const accountss = process.env.ACCOUNT_PRIVATE_KEY;
-console.log(accountss);
+
 
 module.exports = {
   

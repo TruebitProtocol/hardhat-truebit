@@ -89,9 +89,9 @@ task("token", "prices and purchase")
             const balancetru = await trucontract.balanceOf(contract.tru.address);
             console.log("          %s TRU", ethers.utils.formatEther(balancetru));
             // Tru deposit
-            const trudecontract = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
-            const balancedetru = await trudecontract.balancedetru(contract.tru.address);
-            console.log("          %s TRU deposit ", ethers.utils.formatEther(balancedetru));
+            const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+            const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.index].address);
+            console.log("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
 
         }
   });
