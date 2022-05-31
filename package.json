@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@symblox/hardhat-dotenv": "^1.0.0",
-    "find-config": "^1.0.0"
+    "find-config": "^1.0.0",
+    "web3": "^1.7.3"
   }
 }

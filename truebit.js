@@ -2,6 +2,7 @@ const ether = require("@nomiclabs/hardhat-ethers");
 const { keccak256 } = require("ethers/lib/utils");
 const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
+const web3 = require("web3");
 
 
 // Check License price
@@ -19,7 +20,7 @@ task("license", "Prints license price")
             contract= truebitgoerli;
             break;
     }
-    const solver = hre.ethers.utils.sha256(hre.ethers.utils.toUtf8Bytes("SOLVER"));
+    
     if (taskArgs.param1=="price"){
         const accounts = await hre.ethers.getSigners();
         //const contractAddress = truebit.incentiveLayer.address;
@@ -32,14 +33,18 @@ task("license", "Prints license price")
     if (taskArgs.param1=="check"){
         const accounts = await hre.ethers.getSigners();
         const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
-        if (await purchasecontract.hasRole(solver,accounts[taskArgs.index]) ){
+        const solver = web3.utils.soliditySha3('SOLVER');
+        console.log("solver web3: %s", solver);
+        if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
             console.log("Has license");
         }else {
             console.log("No license");
         }
         
     }
-    if (taskArgs.param1=="purchase"){}
+    if (taskArgs.param1=="purchase"){ 
+        //TODO
+    }
   });
 
 
@@ -61,7 +66,9 @@ task("token", "prices and purchase")
         console.log("Purchase 1000 TRU for %s eth", ethers.utils.formatEther(valuetrubuy));
         console.log("Retiring 1000 TRU for %s eth", ethers.utils.formatEther(valuetrusell));
     }
-    if (taskArgs.param1=="purchase"){}
+    if (taskArgs.param1=="purchase"){
+        //TODO
+    }
   });
 
 
