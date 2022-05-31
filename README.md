@@ -30,9 +30,11 @@ npx hardhat license check -a 1
 #balance
 npx hardhat balance -r 1 
 
+#Impersonate account for balance
+npx hardhat Impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
 
-
-
+#Stop Impersonate account for balance
+npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 
 npx hardhat help
 ```
