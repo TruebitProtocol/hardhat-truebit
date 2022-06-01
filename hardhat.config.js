@@ -31,23 +31,27 @@ module.exports = {
     hardhat: {
       chainId: CHAIN_IDS.hardhat,
       forking: {
-             accounts: [`${process.env.ACCOUNT_PRIVATE_KEY}`],
-        // Using Infura
-        
+        // Forking Goerli or Mainnet
+        // Select the network to fork and un comment.    
+
         //url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
         url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
-        
-        //blockNumber: 14821000, // a specific block number with which you want to work
       },
     },
     
     mainnet: {
       chainId: 1,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
-      //accounts: ["2b40c513f6df81142d0c8bfaa573cde5ffb3b19af566463e814afab7175e4f6e"],
-      accounts: [`${process.env.ACCOUNT_PRIVATE_KEY}`],
-    }
-    
+      // include your accounts PK
+      accounts: [`${process.env.ACCOUNT_PRIVATE_KEY1}`, `${process.env.ACCOUNT_PRIVATE_KEY2}`, `${process.env.ACCOUNT_PRIVATE_KEY3}`],
+    },
+
+    goerli: {
+      chainId: 5,
+      url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
+      // include your accounts PK
+      accounts: [`${process.env.ACCOUNT_PRIVATE_KEY1}`, `${process.env.ACCOUNT_PRIVATE_KEY2}`, `${process.env.ACCOUNT_PRIVATE_KEY3}`],             
+    },
     
   }
 }

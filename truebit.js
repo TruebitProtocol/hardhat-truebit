@@ -19,6 +19,9 @@ task("license", "Prints license price")
         case "hardhat":
             contract= truebitgoerli;
             break;
+        case "goerli":
+            contract= truebitgoerli;
+            break;
     }
     
     if (taskArgs.param1=="price"){
@@ -31,7 +34,6 @@ task("license", "Prints license price")
         const accounts = await hre.ethers.getSigners();
         const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
         const solver = web3.utils.soliditySha3('SOLVER');
-        console.log("solver web3: %s", solver);
         if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
             console.log("Has license");
         }else {
@@ -51,6 +53,18 @@ task("license", "Prints license price")
 task("token", "prices and purchase")
     .addPositionalParam("param1")
     .setAction(async (taskArgs) => {
+    var contract ;
+    switch (hre.network.name) {
+        case "mainnet":
+            contract = truebitmain;
+            break;
+        case "hardhat":
+            contract= truebitgoerli;
+            break;
+        case "goerli":
+            contract= truebitgoerli;
+            break;
+    }
     if (taskArgs.param1=="price"){     
         const accounts = await hre.ethers.getSigners();
         var contract = truebitgoerli;
@@ -80,6 +94,9 @@ task("token", "prices and purchase")
                 contract = truebitmain;
                 break;
             case "hardhat":
+                contract= truebitgoerli;
+                break;
+            case "goerli":
                 contract= truebitgoerli;
                 break;
         }
@@ -135,6 +152,14 @@ task("Impersonate", "Impersonate account")
          const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
          const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
          console.log("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
+
+         const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+         const solver = web3.utils.soliditySha3('SOLVER');
+         if (await purchasecontract.hasRole(solver,taskArgs.account) ){
+             console.log("Has license");
+         }else {
+             console.log("No license");
+         }
     }
     if (taskArgs.param1=="false"){
         await hre.network.provider.request({

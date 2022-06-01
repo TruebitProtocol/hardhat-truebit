@@ -37,4 +37,8 @@ npx hardhat Impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
 npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 
 npx hardhat help
+
+
+#using network specific
+npx hardhat balance -r 0 --network goerli
 ```
