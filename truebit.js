@@ -168,3 +168,33 @@ task("Impersonate", "Impersonate account")
           });
     }
   });
+
+  // Check Bonus per task
+task("bonus", " Display current per task subsidy")
+.setAction(async (taskArgs) => {
+var contract ;
+switch (hre.network.name) {
+    case "mainnet":
+        contract = truebitmain;
+        break;
+    case "hardhat":
+        contract= truebitgoerli;
+        break;
+    case "goerli":
+        contract= truebitgoerli;
+        break;
+}
+
+const accounts = await hre.ethers.getSigners();
+const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+const value = await incentivelayer.bonusTable();
+
+let ownerAmount = ethers.utils.formatEther(value.mul(2).toString())/9;
+let solverAmount = ethers.utils.formatEther(value.mul(4).toString())/9;
+let verifierAmount = ethers.utils.formatEther(value.mul(3).toString())/9;
+console.log("info: Subsidies per task");
+console.log("     %s TRU for the Task Owner", ownerAmount);
+console.log("     %s TRU for the Solver, and", solverAmount);
+console.log("     %s TRU for split among Verifiers", verifierAmount);
+
+});
