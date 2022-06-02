@@ -11,41 +11,47 @@ task("license", "Prints license price")
     .addPositionalParam("param2")
     .addPositionalParam("index")
     .setAction(async (taskArgs) => {
-    var contract ;
-    switch (hre.network.name) {
-        case "mainnet":
-            contract = truebitmain;
-            break;
-        case "hardhat":
-            contract= truebitgoerli;
-            break;
-        case "goerli":
-            contract= truebitgoerli;
-            break;
-    }
-    
-    if (taskArgs.param1=="price"){
-        const accounts = await hre.ethers.getSigners();
-        const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
-        const value = await incentivelayer.LICENSE_FEE();
-        console.log("Solver license price %s eth", ethers.utils.formatEther(value));
-    }
-    if (taskArgs.param1=="check"){
-        const accounts = await hre.ethers.getSigners();
-        const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
-        const solver = web3.utils.soliditySha3('SOLVER');
-        if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
-            console.log("Has license");
-        }else {
-            console.log("No license");
-        }
+    // Checking correct parameters syntax 
+    if (taskArgs.param2=="-a" && (taskArgs.param1=="price" || taskArgs.param1=="check") && !isNaN(taskArgs.index)){
         
-    }
-    if (taskArgs.param1=="purchase"){ 
-        //TODO
+            var contract ;
+            switch (hre.network.name) {
+                case "mainnet":
+                    contract = truebitmain;
+                    break;
+                case "hardhat":
+                    contract= truebitgoerli;
+                    break;
+                case "goerli":
+                    contract= truebitgoerli;
+                    break;
+            }
+            
+            if (taskArgs.param1=="price"){
+                const accounts = await hre.ethers.getSigners();
+                const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+                const value = await incentivelayer.LICENSE_FEE();
+                console.log("Solver license price %s eth", ethers.utils.formatEther(value));
+            }
+            if (taskArgs.param1=="check"){
+                const accounts = await hre.ethers.getSigners();
+                const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+                const solver = web3.utils.soliditySha3('SOLVER');
+                if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
+                    console.log("Has license");
+                }else {
+                    console.log("No license");
+                }
+                
+            }
+            if (taskArgs.param1=="purchase"){ 
+                //TODO
+            }
+    }else{
+            console.log("Check syntax eror in parameters");
+            
     }
   });
-
 
  
 // Token operations
@@ -53,41 +59,8 @@ task("license", "Prints license price")
 task("token", "prices and purchase")
     .addPositionalParam("param1")
     .setAction(async (taskArgs) => {
-    var contract ;
-    switch (hre.network.name) {
-        case "mainnet":
-            contract = truebitmain;
-            break;
-        case "hardhat":
-            contract= truebitgoerli;
-            break;
-        case "goerli":
-            contract= truebitgoerli;
-            break;
-    }
-    if (taskArgs.param1=="price"){     
-        const accounts = await hre.ethers.getSigners();
-        var contract = truebitgoerli;
-        //const contractAddress = truebit.incentiveLayer.address;
-        // Tru price
-        const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
-            
-        const valuetrubuy = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
-        const valuetrusell = await trucontract.getRetirePrice(ethers.utils.parseUnits("1000"));
-        console.log("Purchase 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrubuy));
-        console.log("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
-    }
-    if (taskArgs.param1=="purchase"){
-        //TODO
-    }
-  });
-
-
-// Check balance
-  task("balance", "Prints an account's balance")
-    .addPositionalParam("param1")
-    .addPositionalParam("index")
-    .setAction(async (taskArgs) => {
+     // Checking correct parameters syntax 
+    if (taskArgs.param1=="price" || taskArgs.param1=="purchase"){
         var contract ;
         switch (hre.network.name) {
             case "mainnet":
@@ -100,7 +73,47 @@ task("token", "prices and purchase")
                 contract= truebitgoerli;
                 break;
         }
-        if (taskArgs.param1=="-r"){ 
+        if (taskArgs.param1=="price"){     
+            const accounts = await hre.ethers.getSigners();
+            var contract = truebitgoerli;
+            //const contractAddress = truebit.incentiveLayer.address;
+            // Tru price
+            const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+                
+            const valuetrubuy = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
+            const valuetrusell = await trucontract.getRetirePrice(ethers.utils.parseUnits("1000"));
+            console.log("Purchase 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrubuy));
+            console.log("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
+        }
+        if (taskArgs.param1=="purchase"){
+            //TODO
+        }
+    }else {
+        console.log("Check syntax eror in parameters");
+    }
+  });
+
+
+// Check balance
+  task("balance", "Prints an account's balance")
+    .addPositionalParam("param1")
+    .addPositionalParam("index")
+    .setAction(async (taskArgs) => {
+     // Checking correct parameters syntax 
+     if (taskArgs.param1=="-a" && !isNaN(taskArgs.index) ){
+        var contract ;
+        switch (hre.network.name) {
+            case "mainnet":
+                contract = truebitmain;
+                break;
+            case "hardhat":
+                contract= truebitgoerli;
+                break;
+            case "goerli":
+                contract= truebitgoerli;
+                break;
+        }
+        if (taskArgs.param1=="-a"){ 
             const accounts = await hre.ethers.getSigners();
             const balance = await accounts[taskArgs.index].getBalance();
             console.log("balance: \n   Address: ",accounts[taskArgs.index].address);
@@ -116,6 +129,9 @@ task("token", "prices and purchase")
             console.log("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
 
         }
+     }else{
+        console.log("Check syntax eror in parameters");
+     }
   });
 
 
@@ -130,6 +146,10 @@ task("Impersonate", "Impersonate account")
             method: "hardhat_impersonateAccount",
             params: [taskArgs.account],
           });
+          await network.provider.send("hardhat_setBalance", [
+            taskArgs.account,
+            "0xFB900000000000000",
+          ]);
           var contract ;
         switch (hre.network.name) {
             case "mainnet":

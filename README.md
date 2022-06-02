@@ -29,7 +29,7 @@ npx hardhat license price
 npx hardhat license check -a 1
 
 #balance
-npx hardhat balance -r 1 
+npx hardhat balance -a 1 
 
 #bonus
 npx hardhat bonus
@@ -41,7 +41,7 @@ npx hardhat Impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
 npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 
 #using network specific
-npx hardhat balance -r 0 --network goerli
+npx hardhat balance -a 0 --network goerli
 
 npx hardhat help
 ```
