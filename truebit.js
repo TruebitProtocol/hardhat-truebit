@@ -48,7 +48,7 @@ task("license", "Prints license price")
                 //TODO
             }
     }else{
-            console.info("Check syntax eror in parameters");
+            console.info("Check syntax error in parameters");
             
     }
   });
@@ -89,7 +89,7 @@ task("token", "prices and purchase")
             //TODO
         }
     }else {
-        console.info("Check syntax eror in parameters");
+        console.info("Check syntax error in parameters");
     }
   });
 
@@ -130,7 +130,7 @@ task("token", "prices and purchase")
 
         }
      }else{
-        console.info("Check syntax eror in parameters");
+        console.info("Check syntax error in parameters");
      }
   });
 
@@ -224,6 +224,7 @@ task("verification", "check account")
     .addPositionalParam("account")
     .setAction(async (taskArgs) => {
     //if (taskArgs.param1=="check"){     
+        var verification = true;
         await hre.network.provider.request({
             method: "hardhat_impersonateAccount",
             params: [taskArgs.account],
@@ -244,7 +245,8 @@ task("verification", "check account")
         const accountip = await hre.ethers.getSigner(taskArgs.account);
         const balance = await accountip.getBalance();
         if ( ethers.utils.formatEther(balance)<0.02){
-            console.info("You need more ETH to execute Truebit, minimun 0.02 ETH, in your account: %s ETH", ethers.utils.formatEther(balance));    
+            console.info("\x1b[31m You need more ETH to execute Truebit, minimum 0.02 ETH, in your account: %s ETH", ethers.utils.formatEther(balance));    
+            verification = false;
         }
         
          // Tru balance
@@ -254,23 +256,30 @@ task("verification", "check account")
          // Tru deposit
          const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
          const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
+         
          if ( ethers.utils.formatEther(deposit)<11){
-            console.info("- No enough TRU, please deposit TRU");
-            console.info("    Minimun deposits depend on the role ");
+            console.info("- \x1b[31m Not enough TRU, please deposit  TRU");
+            console.info("    Minimum deposits depend on the role ");
             console.info("    Task Submmiter 8 TRU, Sovler and Verify 10 TRU");
             console.info("    current deposit: %s TRU", ethers.utils.formatEther(deposit));
             if (ethers.utils.formatEther(balancetru)>10){
                 console.info("    This account has %s TRU", ethers.utils.formatEther(balancetru));
                 console.info("    you can se it to deposit in Truebit");
             }else{
-                (console.info("    You need first to purchase some TRU before deposit in Truebit"));
+                (console.info("    You need first to purchase some TRU before depositing in Truebit"));
             }
+            verification = false;
          }
          const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
          const solver = web3.utils.soliditySha3('SOLVER');
          if (!(await purchasecontract.hasRole(solver,taskArgs.account)) ){
-             console.info("-This account doens't have a LICENSE, If you plan to Solve, you need to purchase a License, cost 0.4 ETH"); 
+             console.info("\x1b[31m -This account doesn't have a LICENSE, If you plan to Solve, you need to purchase a License, cost 0.4 ETH"); 
+             verification = false;
          }
+         if(verification){
+             console.info("\x1b[32m The account is READY to execute TRUEBIT");
+         }
+         console.info("\x1b[37m \n");
    // }
     
   });
