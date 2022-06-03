@@ -9,10 +9,7 @@ To fork Goerli or mainnet, change configuration in hardhat.config and execute:
 
 npx hardhat node --network hardhat
 
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
+
 
 npx hardhat run scripts/truebitprices.js --network mainnet
 
@@ -40,8 +37,19 @@ npx hardhat Impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
 #Stop Impersonate account for balance
 npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 
+#verify the account ready to submit task, solve or verify
+npx hardhat verification  0x1F04a03F5fBF7fD20EC461efC38f8827B2E6AF6a
+
 #using network specific
 npx hardhat balance -a 0 --network goerli
+
+# Test Truebit network reach
+npx hardhat test
+
+
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
 
 npx hardhat help
 ```

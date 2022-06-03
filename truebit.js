@@ -189,7 +189,7 @@ task("Impersonate", "Impersonate account")
     }
   });
 
-  // Check Bonus per task
+// Check Bonus per task
 task("bonus", " Display current per task subsidy")
 .setAction(async (taskArgs) => {
 var contract ;
@@ -218,3 +218,59 @@ console.log("     %s TRU for the Solver, and", solverAmount);
 console.log("     %s TRU for split among Verifiers", verifierAmount);
 
 });
+
+// Verify if the account is ready for  
+task("verification", "check account")
+    .addPositionalParam("account")
+    .setAction(async (taskArgs) => {
+    //if (taskArgs.param1=="check"){     
+        await hre.network.provider.request({
+            method: "hardhat_impersonateAccount",
+            params: [taskArgs.account],
+          });
+          var contract ;
+        switch (hre.network.name) {
+            case "mainnet":
+                contract = truebitmain;
+                break;
+            case "hardhat":
+                contract= truebitgoerli;
+                break;
+            case "goerli":
+                contract= truebitgoerli;
+                break;
+        }
+
+        const accountip = await hre.ethers.getSigner(taskArgs.account);
+        const balance = await accountip.getBalance();
+        if ( ethers.utils.formatEther(balance)<0.02){
+            console.log("You need more ETH to execute Truebit, minimun 0.02 ETH, in your account: %s ETH", ethers.utils.formatEther(balance));    
+        }
+        
+         // Tru balance
+         const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+         const balancetru = await trucontract.balanceOf(taskArgs.account);
+         
+         // Tru deposit
+         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+         const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
+         if ( ethers.utils.formatEther(deposit)<11){
+            console.log("- No enough TRU, please deposit TRU");
+            console.log("    Minimun deposits depend on the role ");
+            console.log("    Task Submmiter 8 TRU, Sovler and Verify 10 TRU");
+            console.log("    current deposit: %s TRU", ethers.utils.formatEther(deposit));
+            if (ethers.utils.formatEther(balancetru)>10){
+                console.log("    This account has %s TRU", ethers.utils.formatEther(balancetru));
+                console.log("    you can se it to deposit in Truebit");
+            }else{
+                (console.log("    You need first to purchase some TRU before deposit in Truebit"));
+            }
+         }
+         const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+         const solver = web3.utils.soliditySha3('SOLVER');
+         if (!(await purchasecontract.hasRole(solver,taskArgs.account)) ){
+             console.log("-This account doens't have a LICENSE, If you plan to Solve, you need to purchase a License, cost 0.4 ETH"); 
+         }
+   // }
+    
+  });
