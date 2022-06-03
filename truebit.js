@@ -31,16 +31,16 @@ task("license", "Prints license price")
                 const accounts = await hre.ethers.getSigners();
                 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
                 const value = await incentivelayer.LICENSE_FEE();
-                console.log("Solver license price %s eth", ethers.utils.formatEther(value));
+                console.info("Solver license price %s eth", ethers.utils.formatEther(value));
             }
             if (taskArgs.param1=="check"){
                 const accounts = await hre.ethers.getSigners();
                 const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
                 const solver = web3.utils.soliditySha3('SOLVER');
                 if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
-                    console.log("Has license");
+                    console.info("Has license");
                 }else {
-                    console.log("No license");
+                    console.info("No license");
                 }
                 
             }
@@ -48,7 +48,7 @@ task("license", "Prints license price")
                 //TODO
             }
     }else{
-            console.log("Check syntax eror in parameters");
+            console.info("Check syntax eror in parameters");
             
     }
   });
@@ -82,14 +82,14 @@ task("token", "prices and purchase")
                 
             const valuetrubuy = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
             const valuetrusell = await trucontract.getRetirePrice(ethers.utils.parseUnits("1000"));
-            console.log("Purchase 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrubuy));
-            console.log("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
+            console.info("Purchase 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrubuy));
+            console.info("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
         }
         if (taskArgs.param1=="purchase"){
             //TODO
         }
     }else {
-        console.log("Check syntax eror in parameters");
+        console.info("Check syntax eror in parameters");
     }
   });
 
@@ -116,21 +116,21 @@ task("token", "prices and purchase")
         if (taskArgs.param1=="-a"){ 
             const accounts = await hre.ethers.getSigners();
             const balance = await accounts[taskArgs.index].getBalance();
-            console.log("balance: \n   Address: ",accounts[taskArgs.index].address);
-            console.log("   account: %s ETH", ethers.utils.formatEther(balance));
+            console.info("balance: \n   Address: ",accounts[taskArgs.index].address);
+            console.info("   account: %s ETH", ethers.utils.formatEther(balance));
             
             // Tru balance
             const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
             const balancetru = await trucontract.balanceOf(accounts[taskArgs.index].address);
-            console.log("             %s TRU", ethers.utils.formatEther(balancetru));
+            console.info("             %s TRU", ethers.utils.formatEther(balancetru));
             // Tru deposit
             const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
             const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.index].address);
-            console.log("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
+            console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
 
         }
      }else{
-        console.log("Check syntax eror in parameters");
+        console.info("Check syntax eror in parameters");
      }
   });
 
@@ -161,24 +161,24 @@ task("Impersonate", "Impersonate account")
         }
 
         const accountip = await hre.ethers.getSigner(taskArgs.account);
-        console.log("balance: \n   Address: ",accountip.address);
+        console.info("balance: \n   Address: ",accountip.address);
         const balance = await accountip.getBalance();
-        console.log("   account: %s ETH", ethers.utils.formatEther(balance));
+        console.info("   account: %s ETH", ethers.utils.formatEther(balance));
          // Tru balance
          const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
          const balancetru = await trucontract.balanceOf(taskArgs.account);
-         console.log("             %s TRU", ethers.utils.formatEther(balancetru));
+         console.info("             %s TRU", ethers.utils.formatEther(balancetru));
          // Tru deposit
          const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
          const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
-         console.log("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
+         console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
 
          const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
          const solver = web3.utils.soliditySha3('SOLVER');
          if (await purchasecontract.hasRole(solver,taskArgs.account) ){
-             console.log("Has license");
+             console.info("Has license");
          }else {
-             console.log("No license");
+             console.info("No license");
          }
     }
     if (taskArgs.param1=="false"){
@@ -212,10 +212,10 @@ const value = await incentivelayer.bonusTable();
 let ownerAmount = ethers.utils.formatEther(value.mul(2).toString())/9;
 let solverAmount = ethers.utils.formatEther(value.mul(4).toString())/9;
 let verifierAmount = ethers.utils.formatEther(value.mul(3).toString())/9;
-console.log("info: Subsidies per task");
-console.log("     %s TRU for the Task Owner", ownerAmount);
-console.log("     %s TRU for the Solver, and", solverAmount);
-console.log("     %s TRU for split among Verifiers", verifierAmount);
+console.info("info: Subsidies per task");
+console.info("     %s TRU for the Task Owner", ownerAmount);
+console.info("     %s TRU for the Solver, and", solverAmount);
+console.info("     %s TRU for split among Verifiers", verifierAmount);
 
 });
 
@@ -244,7 +244,7 @@ task("verification", "check account")
         const accountip = await hre.ethers.getSigner(taskArgs.account);
         const balance = await accountip.getBalance();
         if ( ethers.utils.formatEther(balance)<0.02){
-            console.log("You need more ETH to execute Truebit, minimun 0.02 ETH, in your account: %s ETH", ethers.utils.formatEther(balance));    
+            console.info("You need more ETH to execute Truebit, minimun 0.02 ETH, in your account: %s ETH", ethers.utils.formatEther(balance));    
         }
         
          // Tru balance
@@ -255,21 +255,21 @@ task("verification", "check account")
          const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
          const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
          if ( ethers.utils.formatEther(deposit)<11){
-            console.log("- No enough TRU, please deposit TRU");
-            console.log("    Minimun deposits depend on the role ");
-            console.log("    Task Submmiter 8 TRU, Sovler and Verify 10 TRU");
-            console.log("    current deposit: %s TRU", ethers.utils.formatEther(deposit));
+            console.info("- No enough TRU, please deposit TRU");
+            console.info("    Minimun deposits depend on the role ");
+            console.info("    Task Submmiter 8 TRU, Sovler and Verify 10 TRU");
+            console.info("    current deposit: %s TRU", ethers.utils.formatEther(deposit));
             if (ethers.utils.formatEther(balancetru)>10){
-                console.log("    This account has %s TRU", ethers.utils.formatEther(balancetru));
-                console.log("    you can se it to deposit in Truebit");
+                console.info("    This account has %s TRU", ethers.utils.formatEther(balancetru));
+                console.info("    you can se it to deposit in Truebit");
             }else{
-                (console.log("    You need first to purchase some TRU before deposit in Truebit"));
+                (console.info("    You need first to purchase some TRU before deposit in Truebit"));
             }
          }
          const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
          const solver = web3.utils.soliditySha3('SOLVER');
          if (!(await purchasecontract.hasRole(solver,taskArgs.account)) ){
-             console.log("-This account doens't have a LICENSE, If you plan to Solve, you need to purchase a License, cost 0.4 ETH"); 
+             console.info("-This account doens't have a LICENSE, If you plan to Solve, you need to purchase a License, cost 0.4 ETH"); 
          }
    // }
     
