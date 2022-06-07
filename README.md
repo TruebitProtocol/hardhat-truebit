@@ -13,7 +13,7 @@ npx hardhat node --network hardhat
 
 npx hardhat run scripts/truebitprices.js --network mainnet
 
-# fork
+# Send task using especific network  
 npx hardhat run scripts/truebitprices.js --network hardhat
 
 #token price

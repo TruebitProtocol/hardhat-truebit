@@ -8,11 +8,9 @@ const web3 = require("web3");
 // Check License price
 task("license", "Prints license price")
     .addPositionalParam("param1")
-    .addPositionalParam("param2")
-    .addPositionalParam("index")
     .setAction(async (taskArgs) => {
     // Checking correct parameters syntax 
-    if (taskArgs.param2=="-a" && (taskArgs.param1=="price" || taskArgs.param1=="check") && !isNaN(taskArgs.index)){
+    if (taskArgs.param1=="price" || taskArgs.param1=="check"){
         
             var contract ;
             switch (hre.network.name) {
@@ -260,7 +258,7 @@ task("verification", "check account")
          if ( ethers.utils.formatEther(deposit)<11){
             console.info("- \x1b[31m Not enough TRU, please deposit  TRU");
             console.info("    Minimum deposits depend on the role ");
-            console.info("    Task Submmiter 8 TRU, Sovler and Verify 10 TRU");
+            console.info("    Task Submmiter 8 TRU, Solver and Verify 10 TRU");
             console.info("    current deposit: %s TRU", ethers.utils.formatEther(deposit));
             if (ethers.utils.formatEther(balancetru)>10){
                 console.info("    This account has %s TRU", ethers.utils.formatEther(balancetru));
