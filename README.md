@@ -49,6 +49,8 @@ npx hardhat test
 #update commands
 npx hardhat token purchase -v 200 -a 2 --network hardhat
 
+npx hardhat license purchase --a 0 --network hardhat
+
 
 
 

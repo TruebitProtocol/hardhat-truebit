@@ -5,12 +5,13 @@ const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
 
 
-// Check License price
+// Check License price, check and purchase
 task("license", "Prints license price")
     .addPositionalParam("param1")
+    .addOptionalParam("a")
     .setAction(async (taskArgs) => {
     // Checking correct parameters syntax 
-    if (taskArgs.param1=="price" || taskArgs.param1=="check"){
+    if (taskArgs.param1=="price" || taskArgs.param1=="check"  || taskArgs.param1=="purchase"){
         
             var contract ;
             switch (hre.network.name) {
@@ -42,8 +43,15 @@ task("license", "Prints license price")
                 }
                 
             }
-            if (taskArgs.param1=="purchase"){ 
-                //TODO
+            if (taskArgs.param1=="purchase"){               
+                const accounts = await hre.ethers.getSigners();
+                console.log("Account     %s ", accounts[taskArgs.a].address);
+                const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+                //License price
+                const valuelic = await incentivelayer.LICENSE_FEE();
+                //Buy License
+                const buyLicense = await  incentivelayer.connect(accounts[taskArgs.a]).buyLicense(accounts[taskArgs.a].address , {from: accounts[taskArgs.a].address, value: valuelic});
+                console.info("info: Purchase complete.  Address %s has successfully registered as Solver.",accounts[taskArgs.a].address);
             }
     }else{
             console.info("Check syntax error in parameters");
@@ -55,14 +63,12 @@ task("license", "Prints license price")
 // Token operations
 // price: return the current price for purchase and sell
 task("token", "prices and purchase")
-    .addPositionalParam("param1")
-    .addPositionalParam("parOp1")
-    .addPositionalParam("parVal")
-    .addPositionalParam("parAcc")
-    .addPositionalParam("parAccIndex")
+    .addPositionalParam("mainOp")
+    .addOptionalParam("v")
+    .addOptionalParam("a")
     .setAction(async (taskArgs) => {
      // Checking correct parameters syntax 
-    if (taskArgs.param1=="price" || taskArgs.param1=="purchase"){
+    if (taskArgs.mainOp=="price" || taskArgs.mainOp=="purchase"){
         var contract ;
         switch (hre.network.name) {
             case "mainnet":
@@ -75,26 +81,24 @@ task("token", "prices and purchase")
                 contract= truebitgoerli;
                 break;
         }
-        if (taskArgs.param1=="price"){     
+        if (taskArgs.mainOp=="price"){     
             const accounts = await hre.ethers.getSigners();
             // Tru price
             const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
-                
             const valuetrubuy = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
             const valuetrusell = await trucontract.getRetirePrice(ethers.utils.parseUnits("1000"));
             console.info("Purchase 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrubuy));
             console.info("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
         }
-        if (taskArgs.param1=="purchase"){
-            
+        if (taskArgs.mainOp=="purchase"){
             const accounts = await hre.ethers.getSigners();
-            const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+            const purchaseContract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
             //TRU Price
-            const purchasePriceETH = await trucontract.getPurchasePrice(ethers.utils.parseUnits(taskArgs.parVal));
-            const purchasePriceETHRef = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
+            const purchasePriceETH = await purchaseContract.getPurchasePrice(ethers.utils.parseUnits(taskArgs.v));
+            const purchasePriceETHRef = await purchaseContract.getPurchasePrice(ethers.utils.parseUnits("1000"));
             // Tru BuyTRU
-            const valuetrubuy = await trucontract.connect(accounts[taskArgs.parAccIndex]).buyTRU(ethers.utils.parseUnits(taskArgs.parVal), {from: accounts[taskArgs.parAccIndex].address, value: purchasePriceETH});
-            console.info("info: Address %s bought %s TRU with %s ETH",accounts[taskArgs.parAccIndex].address, taskArgs.parVal,  ethers.utils.formatEther(valuetrubuy.value));
+            const valuetrubuy = await purchaseContract.connect(accounts[taskArgs.a]).buyTRU(ethers.utils.parseUnits(taskArgs.v), {from: accounts[taskArgs.a].address, value: purchasePriceETH});
+            console.info("info: Address %s bought %s TRU with %s ETH",accounts[taskArgs.a].address, taskArgs.v,  ethers.utils.formatEther(valuetrubuy.value));
             console.info("The effective price was %s TRU/ETH. Hash %s",ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.blockHash );
         }
     }else {
@@ -127,7 +131,6 @@ task("token", "prices and purchase")
             const balance = await accounts[taskArgs.index].getBalance();
             console.info("balance: \n   Address: ",accounts[taskArgs.index].address);
             console.info("   account: %s ETH", ethers.utils.formatEther(balance));
-            
             // Tru balance
             const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
             const balancetru = await trucontract.balanceOf(accounts[taskArgs.index].address);
@@ -168,7 +171,6 @@ task("Impersonate", "Impersonate account")
                 contract= truebitgoerli;
                 break;
         }
-
         const accountip = await hre.ethers.getSigner(taskArgs.account);
         console.info("balance: \n   Address: ",accountip.address);
         const balance = await accountip.getBalance();
@@ -181,7 +183,6 @@ task("Impersonate", "Impersonate account")
          const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
          const deposit = await incentivelayer.getUnbondedDeposit(taskArgs.account);
          console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
-
          const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
          const solver = web3.utils.soliditySha3('SOLVER');
          if (await purchasecontract.hasRole(solver,taskArgs.account) ){
