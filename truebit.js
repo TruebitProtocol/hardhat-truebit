@@ -56,6 +56,10 @@ task("license", "Prints license price")
 // price: return the current price for purchase and sell
 task("token", "prices and purchase")
     .addPositionalParam("param1")
+    .addPositionalParam("parOp1")
+    .addPositionalParam("parVal")
+    .addPositionalParam("parAcc")
+    .addPositionalParam("parAccIndex")
     .setAction(async (taskArgs) => {
      // Checking correct parameters syntax 
     if (taskArgs.param1=="price" || taskArgs.param1=="purchase"){
@@ -73,8 +77,6 @@ task("token", "prices and purchase")
         }
         if (taskArgs.param1=="price"){     
             const accounts = await hre.ethers.getSigners();
-            var contract = truebitgoerli;
-            //const contractAddress = truebit.incentiveLayer.address;
             // Tru price
             const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
                 
@@ -84,7 +86,16 @@ task("token", "prices and purchase")
             console.info("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
         }
         if (taskArgs.param1=="purchase"){
-            //TODO
+            
+            const accounts = await hre.ethers.getSigners();
+            const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+            //TRU Price
+            const purchasePriceETH = await trucontract.getPurchasePrice(ethers.utils.parseUnits(taskArgs.parVal));
+            const purchasePriceETHRef = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
+            // Tru BuyTRU
+            const valuetrubuy = await trucontract.connect(accounts[taskArgs.parAccIndex]).buyTRU(ethers.utils.parseUnits(taskArgs.parVal), {from: accounts[taskArgs.parAccIndex].address, value: purchasePriceETH});
+            console.info("info: Address %s bought %s TRU with %s ETH",accounts[taskArgs.parAccIndex].address, taskArgs.parVal,  ethers.utils.formatEther(valuetrubuy.value));
+            console.info("The effective price was %s TRU/ETH. Hash %s",ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.blockHash );
         }
     }else {
         console.info("Check syntax error in parameters");

@@ -46,10 +46,16 @@ npx hardhat balance -a 0 --network goerli
 # Test Truebit network reach
 npx hardhat test
 
+#update commands
+npx hardhat token purchase -v 200 -a 2 --network hardhat
+
+
+
 
 npx hardhat accounts
 npx hardhat compile
 npx hardhat clean
 
 npx hardhat help
+
 ```
