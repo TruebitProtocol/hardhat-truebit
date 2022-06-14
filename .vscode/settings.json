@@ -1,3 +1,4 @@
 {
-    "json.maxItemsComputed": 15000
+    "json.maxItemsComputed": 15000,
+    "editor.foldingMaximumRegions": 25000
 }

@@ -36,6 +36,7 @@ module.exports = {
 
         //url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
         url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
+        accounts: [`${process.env.ACCOUNT_FORK_KEY1}`, `${process.env.ACCOUNT_FORK_KEY2}`, `${process.env.ACCOUNT_FORK_KEY3}`],
       },
     },
     

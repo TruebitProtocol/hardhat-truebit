@@ -3,6 +3,7 @@ const { keccak256 } = require("ethers/lib/utils");
 const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
+const { Signer, ethers } = require("ethers");
 
 
 // Check License price, check and purchase
@@ -13,6 +14,8 @@ task("license", "Prints license price")
     // Checking correct parameters syntax 
     if (taskArgs.param1=="price" || taskArgs.param1=="check"  || taskArgs.param1=="purchase"){
         
+            //get accounts
+            const accounts = await hre.ethers.getSigners();
             var contract ;
             switch (hre.network.name) {
                 case "mainnet":
@@ -26,25 +29,22 @@ task("license", "Prints license price")
                     break;
             }
             
-            if (taskArgs.param1=="price"){
-                const accounts = await hre.ethers.getSigners();
+            if (taskArgs.param1=="price"){                
                 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
                 const value = await incentivelayer.LICENSE_FEE();
                 console.info("Solver license price %s eth", ethers.utils.formatEther(value));
             }
-            if (taskArgs.param1=="check"){
-                const accounts = await hre.ethers.getSigners();
+            if (taskArgs.param1=="check"){                
                 const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
                 const solver = web3.utils.soliditySha3('SOLVER');
-                if (await purchasecontract.hasRole(solver,accounts[taskArgs.index].address) ){
+                if (await purchasecontract.hasRole(solver,accounts[taskArgs.a].address) ){
                     console.info("Has license");
                 }else {
                     console.info("No license");
                 }
                 
             }
-            if (taskArgs.param1=="purchase"){               
-                const accounts = await hre.ethers.getSigners();
+            if (taskArgs.param1=="purchase"){       
                 console.log("Account     %s ", accounts[taskArgs.a].address);
                 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
                 //License price
@@ -66,23 +66,25 @@ task("token", "prices and purchase")
     .addPositionalParam("mainOp")
     .addOptionalParam("v")
     .addOptionalParam("a")
+    .addOptionalParam("t")
     .setAction(async (taskArgs) => {
+    //get accounts
+    const accounts = await hre.ethers.getSigners();
      // Checking correct parameters syntax 
-    if (taskArgs.mainOp=="price" || taskArgs.mainOp=="purchase"){
+    if (taskArgs.mainOp=="price" || taskArgs.mainOp=="purchase" || taskArgs.mainOp=="deposit" || taskArgs.mainOp=="retire" || taskArgs.mainOp=="transfer-eth" || taskArgs.mainOp=="transfer-tru" || taskArgs.mainOp=="withdraw"){
         var contract ;
         switch (hre.network.name) {
             case "mainnet":
                 contract = truebitmain;
                 break;
             case "hardhat":
-                contract= truebitgoerli;
+                contract= truebitmain;
                 break;
             case "goerli":
                 contract= truebitgoerli;
                 break;
         }
         if (taskArgs.mainOp=="price"){     
-            const accounts = await hre.ethers.getSigners();
             // Tru price
             const trucontract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
             const valuetrubuy = await trucontract.getPurchasePrice(ethers.utils.parseUnits("1000"));
@@ -91,16 +93,93 @@ task("token", "prices and purchase")
             console.info("Retiring 1000 TRU for %s ETH", ethers.utils.formatEther(valuetrusell));
         }
         if (taskArgs.mainOp=="purchase"){
-            const accounts = await hre.ethers.getSigners();
             const purchaseContract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
             //TRU Price
             const purchasePriceETH = await purchaseContract.getPurchasePrice(ethers.utils.parseUnits(taskArgs.v));
             const purchasePriceETHRef = await purchaseContract.getPurchasePrice(ethers.utils.parseUnits("1000"));
             // Tru BuyTRU
-            const valuetrubuy = await purchaseContract.connect(accounts[taskArgs.a]).buyTRU(ethers.utils.parseUnits(taskArgs.v), {from: accounts[taskArgs.a].address, value: purchasePriceETH});
-            console.info("info: Address %s bought %s TRU with %s ETH",accounts[taskArgs.a].address, taskArgs.v,  ethers.utils.formatEther(valuetrubuy.value));
-            console.info("The effective price was %s TRU/ETH. Hash %s",ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.blockHash );
+            try{
+                const valuetrubuy = await purchaseContract.connect(accounts[taskArgs.a]).buyTRU(ethers.utils.parseUnits(taskArgs.v), {from: accounts[taskArgs.a].address, value: purchasePriceETH, gasLimit: 100000});
+                console.info("info: Address %s bought %s TRU with %s ETH",accounts[taskArgs.a].address, taskArgs.v,  ethers.utils.formatEther(valuetrubuy.value));
+                console.info("The effective price was %s TRU/ETH. Hash %s",ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.blockHash );
+            } catch (err) {
+                console.error(`Unable to purchase.  ${err}`)
+                }
+                // Tru balance
+            const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+            const balancetru = await trucontract.balanceOf(accounts[taskArgs.a].address);
+            console.info("             %s TRU", balancetru);
+            console.info("             %s TRU", ethers.utils.formatEther(balancetru));
         }
+        if (taskArgs.mainOp=="deposit"){
+            if (ethers.utils.parseUnits(taskArgs.v)>0){
+                const truContract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+                try{
+                    await truContract.connect(accounts[taskArgs.a]).approve(contract.incentiveLayer.address, ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address });
+                    const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+                    await incentivelayer.connect(accounts[taskArgs.a]).makeDeposit(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 120000 });
+                    console.info('Deposited ' + taskArgs.v + ' TRU from account ' + accounts[taskArgs.a].address + ' into IncentiveLayer ' + contract.incentiveLayer.address +'.');
+                } catch (err) {
+                    console.error(`Unable to deposit.  ${err}`);
+                    }
+            }
+        }
+
+        if (taskArgs.mainOp=="retire"){
+            if (ethers.utils.parseUnits(taskArgs.v)>0){
+                const truContract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+                const purchaseContract = await hre.ethers.getContractAt(contract.purchase.abi,contract.purchase.address);
+                try{
+                    console.info("paso 0");
+                    await truContract.connect(accounts[taskArgs.a]).approve(contract.purchase.address, ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address });
+                    console.info("paso 1");
+                    await purchaseContract.connect(accounts[taskArgs.a]).sellTRU(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 200000 });
+                   // console.info('Deposited ' + taskArgs.v + ' TRU from account ' + accounts[taskArgs.a].address + ' into IncentiveLayer ' + contract.incentiveLayer.address +'.');
+                    console.info("paso 2"); 
+                    let retirePriceETH = await purchaseContract.connect(accounts[taskArgs.a]).getRetirePrice(ethers.utils.parseUnits(taskArgs.v));
+                    console.info(`Address ` +  accounts[taskArgs.a].address + ` retired ` + taskArgs.v +` TRU in exchange for ` + retirePriceETH.div(10**18) + ` ETH.  The effective price was ${retirePriceETH.div(10**18).div(num_tru)} TRU/ETH.`);
+                } catch (err) {
+                    console.error(`Unable to deposit.  ${err}`);
+                    }          
+            }
+        }
+
+        if (taskArgs.mainOp=="transfer-eth"){
+            if (ethers.utils.parseUnits(taskArgs.v)>0){
+                try{
+                    await accounts[taskArgs.a].sendTransaction({from: accounts[taskArgs.a].address, to: accounts[taskArgs.t].address, value: ethers.utils.parseUnits(taskArgs.v), gasLimit: 200000})
+                    console.info('Transferred ' + taskArgs.v + ' ETH from account ' + accounts[taskArgs.a].address + ' to account ' +  accounts[taskArgs.t].address + '.')
+                } catch (err) {
+                    console.error(`Unable to transfer.  ${err}`);
+                    }
+                        
+            } 
+        }
+
+        if (taskArgs.mainOp=="transfer-tru"){
+            if (ethers.utils.parseUnits(taskArgs.v)>0){
+                const truContract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+                try{
+                    await truContract.connect(accounts[taskArgs.a]).transfer(accounts[taskArgs.t].address, ethers.utils.parseUnits(taskArgs.v) ,   {from: accounts[taskArgs.a].address, gasLimit: 200000});
+                    console.info('Transferred ' + taskArgs.v + ' TRU from account ' + accounts[taskArgs.a].address + ' to account ' +  accounts[taskArgs.t].address + '.');
+                } catch (err) {
+                    console.error(`Unable to transfer.  ${err}`);
+                    }
+            }
+        }
+
+        if (taskArgs.mainOp=="withdraw"){
+            const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+            if (ethers.utils.parseUnits(taskArgs.v)>0){
+                try{
+                    await incentivelayer.withdrawDeposit( ethers.utils.parseUnits(taskArgs.v) ,   {from: accounts[taskArgs.a].address, gasLimit: 200000});
+                    console.info('Withdrew ' + taskArgs.v + ' TRU from IncentiveLayer ' + contract.incentiveLayer.address + ' to account ' +  accounts[taskArgs.a].address + '.');
+                } catch (err) {
+                    console.error(`Unable to withdraw.  ${err}`);
+                    }
+            }
+        }
+
     }else {
         console.info("Check syntax error in parameters");
     }
@@ -109,12 +188,11 @@ task("token", "prices and purchase")
 
 // Check balance
   task("balance", "Prints an account's balance")
-    .addPositionalParam("param1")
-    .addPositionalParam("index")
+    .addOptionalParam("a")
     .setAction(async (taskArgs) => {
-     // Checking correct parameters syntax 
-     if (taskArgs.param1=="-a" && !isNaN(taskArgs.index) ){
         var contract ;
+        //get accounts
+        const accounts = await hre.ethers.getSigners();
         switch (hre.network.name) {
             case "mainnet":
                 contract = truebitmain;
@@ -125,25 +203,19 @@ task("token", "prices and purchase")
             case "goerli":
                 contract= truebitgoerli;
                 break;
-        }
-        if (taskArgs.param1=="-a"){ 
-            const accounts = await hre.ethers.getSigners();
-            const balance = await accounts[taskArgs.index].getBalance();
-            console.info("balance: \n   Address: ",accounts[taskArgs.index].address);
-            console.info("   account: %s ETH", ethers.utils.formatEther(balance));
-            // Tru balance
-            const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
-            const balancetru = await trucontract.balanceOf(accounts[taskArgs.index].address);
-            console.info("             %s TRU", ethers.utils.formatEther(balancetru));
-            // Tru deposit
-            const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
-            const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.index].address);
-            console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
-
-        }
-     }else{
-        console.info("Check syntax error in parameters");
-     }
+            }
+        //const accounts = await hre.ethers.getSigners();
+        const balance = await accounts[taskArgs.a].getBalance();
+        console.info("balance: \n   Address: ",accounts[taskArgs.a].address);
+        console.info("   account: %s ETH", ethers.utils.formatEther(balance));
+        // Tru balance
+        const trucontract = await hre.ethers.getContractAt(contract.tru.abi,contract.tru.address);
+        const balancetru = await trucontract.balanceOf(accounts[taskArgs.a].address);
+        console.info("             %s TRU", ethers.utils.formatEther(balancetru));
+        // Tru deposit
+        const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
+        const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.a].address);
+        console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
   });
 
 
@@ -203,6 +275,8 @@ task("Impersonate", "Impersonate account")
 task("bonus", " Display current per task subsidy")
 .setAction(async (taskArgs) => {
 var contract ;
+//get accounts
+const accounts = await hre.ethers.getSigners();
 switch (hre.network.name) {
     case "mainnet":
         contract = truebitmain;
@@ -214,8 +288,6 @@ switch (hre.network.name) {
         contract= truebitgoerli;
         break;
 }
-
-const accounts = await hre.ethers.getSigners();
 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi,contract.incentiveLayer.address);
 const value = await incentivelayer.bonusTable();
 
@@ -232,7 +304,7 @@ console.info("     %s TRU for split among Verifiers", verifierAmount);
 // Verify if the account is ready for  
 task("verification", "check account")
     .addPositionalParam("account")
-    .setAction(async (taskArgs) => {
+    .setAction(async (taskArgs, hre) => {
     //if (taskArgs.param1=="check"){     
         var verification = true;
         await hre.network.provider.request({

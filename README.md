@@ -26,7 +26,7 @@ npx hardhat license price
 npx hardhat license check -a 1
 
 #balance
-npx hardhat balance -a 1 
+npx hardhat balance -a 0 --network goerli
 
 #bonus
 npx hardhat bonus
@@ -47,11 +47,22 @@ npx hardhat balance -a 0 --network goerli
 npx hardhat test
 
 #update commands
-npx hardhat token purchase -v 200 -a 2 --network hardhat
 
-npx hardhat license purchase --a 0 --network hardhat
+npx hardhat license purchase --a 0 --network goerli
 
+npx hardhat balance -a 1 --network goerli
 
+npx hardhat token purchase --v 2000 --a 2 --network goerli
+
+npx hardhat token retire --v 20 --a 1 --network goerli
+
+npx hardhat token deposit --v 20 --a 1 --network goerli
+
+npx hardhat token transfer-eth --v 0.05 --a 0 --t 1 --network goerli
+
+npx hardhat token transfer-tru --v 1 --a 0 --t 1 --network goerli
+
+hardhat token withdraw --v 7 --a 0  --network goerli
 
 
 npx hardhat accounts
