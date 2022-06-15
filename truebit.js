@@ -220,7 +220,7 @@ task("balance", "Prints an account's balance")
         // Tru deposit
         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
         const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.a].address);
-        console.info("deposit (Unbonded):  %s TRU", ethers.utils.formatEther(deposit));
+        console.info("Deposit (Unbonded):  %s TRU", ethers.utils.formatEther(deposit));
     });
 
 
