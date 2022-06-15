@@ -50,8 +50,12 @@ task("license", "Prints license price")
                 //License price
                 const valuelic = await incentivelayer.LICENSE_FEE();
                 //Buy License
-                const buyLicense = await  incentivelayer.connect(accounts[taskArgs.a]).buyLicense(accounts[taskArgs.a].address , {from: accounts[taskArgs.a].address, value: valuelic});
-                console.info("info: Purchase complete.  Address %s has successfully registered as Solver.",accounts[taskArgs.a].address);
+                try{
+                    const buyLicense = await  incentivelayer.connect(accounts[taskArgs.a]).buyLicense(accounts[taskArgs.a].address , {from: accounts[taskArgs.a].address, value: valuelic, gasLimit:200000});
+                    console.info("info: Purchase complete.  Address %s has successfully registered as Solver.",accounts[taskArgs.a].address);
+                } catch (err) {
+                    console.error(`Unable to purchase.  ${err}`)
+                    }
             }
     }else{
             console.info("Check syntax error in parameters");

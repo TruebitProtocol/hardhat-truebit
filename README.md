@@ -23,10 +23,10 @@ npx hardhat token price
 npx hardhat license price
 
 #license check
-npx hardhat license check -a 1
+npx hardhat license check --a 1
 
 #balance
-npx hardhat balance -a 0 --network goerli
+npx hardhat balance --a 0 --network goerli
 
 #bonus
 npx hardhat bonus
@@ -41,7 +41,7 @@ npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 npx hardhat verification  0x1F04a03F5fBF7fD20EC461efC38f8827B2E6AF6a
 
 #using network specific
-npx hardhat balance -a 0 --network goerli
+npx hardhat balance --a 0 --network goerli
 
 # Test Truebit network reach
 npx hardhat test
@@ -50,7 +50,7 @@ npx hardhat test
 
 npx hardhat license purchase --a 0 --network goerli
 
-npx hardhat balance -a 1 --network goerli
+npx hardhat balance --a 0 --network goerli
 
 npx hardhat token purchase --v 2000 --a 2 --network goerli
 
