@@ -126,7 +126,7 @@ task("token", "prices and purchase")
                         await truContract.connect(accounts[taskArgs.a]).approve(contract.incentiveLayer.address, ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address });
                         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
                         await incentivelayer.connect(accounts[taskArgs.a]).makeDeposit(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 120000 });
-                        console.info('Deposited ' + taskArgs.v + ' TRU from account ' + accounts[taskArgs.a].address + ' into IncentiveLayer ' + contract.incentiveLayer.address + '.');
+                        console.info('Deposited ' + taskArgs.v + ' TRU from Account ' + accounts[taskArgs.a].address + ' into IncentiveLayer ' + contract.incentiveLayer.address + '.');
                     } catch (err) {
                         console.error(`Unable to deposit.  ${err}`);
                     }
@@ -220,7 +220,7 @@ task("balance", "Prints an account's balance")
         // Tru deposit
         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
         const deposit = await incentivelayer.getUnbondedDeposit(accounts[taskArgs.a].address);
-        console.info("deposit (unbonded):  %s TRU", ethers.utils.formatEther(deposit));
+        console.info("deposit (Unbonded):  %s TRU", ethers.utils.formatEther(deposit));
     });
 
 
