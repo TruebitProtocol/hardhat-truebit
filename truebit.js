@@ -105,15 +105,11 @@ task("token", "prices and purchase")
                 try {
                     const valuetrubuy = await purchaseContract.connect(accounts[taskArgs.a]).buyTRU(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, value: purchasePriceETH, gasLimit: 100000 });
                     console.info("info: Address %s bought %s TRU with %s ETH", accounts[taskArgs.a].address, taskArgs.v, ethers.utils.formatEther(valuetrubuy.value));
-                    console.info("The effective price was %s TRU/ETH. Hash %s", ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.blockHash);
+                    console.info("The effective price was %s TRU/ETH. Hash %s", ethers.utils.formatEther(purchasePriceETHRef), valuetrubuy.hash);
                 } catch (err) {
                     console.error(`Unable to purchase.  ${err}`)
                 }
-                // Tru balance
-                const trucontract = await hre.ethers.getContractAt(contract.tru.abi, contract.tru.address);
-                const balancetru = await trucontract.balanceOf(accounts[taskArgs.a].address);
-                console.info("             %s TRU", balancetru);
-                console.info("             %s TRU", ethers.utils.formatEther(balancetru));
+                
             }
             if (taskArgs.mainOp == "deposit") {
                 if (ethers.utils.parseUnits(taskArgs.v) > 0) {
@@ -138,9 +134,9 @@ task("token", "prices and purchase")
                         await purchaseContract.connect(accounts[taskArgs.a]).sellTRU(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 200000 });
                         // console.info('Deposited ' + taskArgs.v + ' TRU from account ' + accounts[taskArgs.a].address + ' into IncentiveLayer ' + contract.incentiveLayer.address +'.');
                         let retirePriceETH = await purchaseContract.connect(accounts[taskArgs.a]).getRetirePrice(ethers.utils.parseUnits(taskArgs.v));
-                        console.info(`Address ` + accounts[taskArgs.a].address + ` retired ` + taskArgs.v + ` TRU in exchange for ` + retirePriceETH.div(10 ** 18) + ` ETH.  The effective price was ${retirePriceETH.div(10 ** 18).div(num_tru)} TRU/ETH.`);
+                        console.info(`Address ` + accounts[taskArgs.a].address + ` retired ` + taskArgs.v + ` TRU in exchange for ` +  ethers.utils.formatEther(retirePriceETH) );
                     } catch (err) {
-                        console.error(`Unable to deposit.  ${err}`);
+                        console.error(`Unable to retire.  ${err}`);
                     }
                 }
             }
@@ -305,13 +301,8 @@ task("bonus", " Display current per task subsidy")
 // Verify if the account is ready for  
 task("verification", "check account")
     .addPositionalParam("account")
-    .setAction(async (taskArgs, hre) => {
-        //if (taskArgs.param1=="check"){     
+    .setAction(async (taskArgs, hre) => {     
         var verification = true;
-        await hre.network.provider.request({
-            method: "hardhat_impersonateAccount",
-            params: [taskArgs.account],
-        });
         var contract;
         switch (hre.network.name) {
             case "mainnet":
