@@ -45,17 +45,25 @@ task("license", "Prints license price")
 
             }
             if (taskArgs.param1 == "purchase") {
-                console.info("Account     %s ", accounts[taskArgs.a].address);
-                const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
-                //License price
-                const valuelic = await incentivelayer.LICENSE_FEE();
-                //Buy License
-                try {
-                    const buyLicense = await incentivelayer.connect(accounts[taskArgs.a]).buyLicense(accounts[taskArgs.a].address, { from: accounts[taskArgs.a].address, value: valuelic, gasLimit: 200000 });
-                    console.info("info: Purchase complete.  Address %s has successfully registered as Solver.", accounts[taskArgs.a].address);
-                } catch (err) {
-                    console.error(`Unable to purchase.  ${err}`)
-                }
+
+                const purchasecontract = await hre.ethers.getContractAt(contract.purchase.abi, contract.purchase.address);
+                const solver = web3.utils.soliditySha3('SOLVER');
+                //check if the user already has a license
+                if (!await purchasecontract.hasRole(solver, accounts[taskArgs.a].address)) {
+                    console.info("Account     %s ", accounts[taskArgs.a].address);
+                    const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
+                    //License price
+                    const valuelic = await incentivelayer.LICENSE_FEE();
+                    //Buy License
+                    try {
+                        const buyLicense = await incentivelayer.connect(accounts[taskArgs.a]).buyLicense(accounts[taskArgs.a].address, { from: accounts[taskArgs.a].address, value: valuelic, gasLimit: 200000 });
+                        console.info("info: Purchase complete.  Address %s has successfully registered as Solver.", accounts[taskArgs.a].address);
+                    } catch (err) {
+                        console.error(`Unable to purchase.  ${err}`)
+                    }
+
+                }else {
+                console.info("Has license");}
             }
         } else {
             console.info("Check syntax error in parameters");
@@ -204,7 +212,7 @@ task("balance", "Prints an account's balance")
         //const accounts = await hre.ethers.getSigners();
         const balance = await accounts[taskArgs.a].getBalance();
         console.info("balance: \n   Address: ", accounts[taskArgs.a].address);
-        console.info("   account: %s ETH", ethers.utils.formatEther(balance));
+        console.info("   Account: %s ETH", ethers.utils.formatEther(balance));
         // Tru balance
         const trucontract = await hre.ethers.getContractAt(contract.tru.abi, contract.tru.address);
         const balancetru = await trucontract.balanceOf(accounts[taskArgs.a].address);
