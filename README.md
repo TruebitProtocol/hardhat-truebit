@@ -52,7 +52,7 @@ npx hardhat license purchase --a 0 --network goerli
 
 npx hardhat balance --a 0 --network goerli
 
-npx hardhat token purchase --v 2000 --a 2 --network goerli
+npx hardhat token purchase --v 10 --a 2 --network goerli
 
 npx hardhat token retire --v 20 --a 1 --network goerli
 
@@ -62,7 +62,7 @@ npx hardhat token transfer-eth --v 0.05 --a 0 --t 1 --network goerli
 
 npx hardhat token transfer-tru --v 1 --a 0 --t 1 --network goerli
 
-hardhat token withdraw --v 7 --a 0  --network goerli
+npx hardhat token withdraw --v 7 --a 0  --network goerli
 
 
 npx hardhat accounts
