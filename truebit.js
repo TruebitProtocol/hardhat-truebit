@@ -74,7 +74,7 @@ task("license", "Prints license price")
 
 // Token operations
 // price: return the current price for purchase and sell
-task("token", "prices and purchase")
+task("token", "Token Operations: prices, purchase, deposit, transfer-eth, transfer-tru, retire and withdraw")
     .addPositionalParam("mainOp")
     .addOptionalParam("v")
     .addOptionalParam("a")
@@ -226,7 +226,7 @@ task("balance", "Prints an account's balance")
 
 // Impersonate 
 // get Balance impersonating specific account 
-task("Impersonate", "Impersonate account")
+task("Impersonate", "Impersonate account and provide ETH balance")
     .addPositionalParam("param1")
     .addPositionalParam("account")
     .setAction(async (taskArgs) => {
@@ -277,7 +277,7 @@ task("Impersonate", "Impersonate account")
     });
 
 // Check Bonus per task
-task("bonus", " Display current per task subsidy")
+task("bonus", "Display current per task subsidy")
     .setAction(async (taskArgs) => {
         var contract;
         //get accounts
@@ -307,7 +307,7 @@ task("bonus", " Display current per task subsidy")
     });
 
 // Verify if the account is ready for  
-task("verification", "check account")
+task("verification", "check account ready for truebit")
     .addPositionalParam("account")
     .setAction(async (taskArgs, hre) => {     
         var verification = true;
