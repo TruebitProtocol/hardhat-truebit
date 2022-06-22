@@ -2,19 +2,16 @@ const hre = require("hardhat");
 const ether = require("@nomiclabs/hardhat-ethers");
 const truebitgoerli = require("../client/goerli.json");
 const truebitmain = require("../client/mainnet.json");
+const myNetwork = require("../util/networkSelector");
 
-var contract ;
+
 async function main() {
 
     
-    switch (hre.network.name) {
-        case "mainnet":
-            contract = truebitmain;
-            break;
-        case "hardhat":
-            contract= truebitgoerli;
-            break;
-    }
+    //get accounts
+            const accounts = await hre.ethers.getSigners();
+           // contracts
+           var contract = myNetwork.network();
 
    console.log("Network :", hre.network.name);
 
