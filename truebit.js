@@ -3,33 +3,22 @@ const { keccak256 } = require("ethers/lib/utils");
 const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
-const { Signer, ethers } = require("ethers");
+const myNetwork = require("./util/networkSelector");
 
 
 // Check License price, check and purchase
 task("license", "Prints license price")
     .addPositionalParam("param1")
     .addOptionalParam("a")
-    .setAction(async (taskArgs) => {
+    .setAction(async (taskArgs, hre) => {
         // Checking correct parameters syntax 
         if (taskArgs.param1 == "price" || taskArgs.param1 == "check" || taskArgs.param1 == "purchase") {
-
             //get accounts
             const accounts = await hre.ethers.getSigners();
-            var contract;
-            switch (hre.network.name) {
-                case "mainnet":
-                    contract = truebitmain;
-                    break;
-                case "hardhat":
-                    contract = truebitgoerli;
-                    break;
-                case "goerli":
-                    contract = truebitgoerli;
-                    break;
-            }
+           // contracts
+           var contract = myNetwork.network();
 
-            if (taskArgs.param1 == "price") {
+            if (taskArgs.param1 == "price") {  
                 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
                 const value = await incentivelayer.LICENSE_FEE();
                 console.info("Solver license price %s eth", ethers.utils.formatEther(value));
@@ -79,23 +68,15 @@ task("token", "Token Operations: prices, purchase, deposit, transfer-eth, transf
     .addOptionalParam("v")
     .addOptionalParam("a")
     .addOptionalParam("t")
-    .setAction(async (taskArgs) => {
-        //get accounts
-        const accounts = await hre.ethers.getSigners();
+    .setAction(async (taskArgs, hre) => {
+        
         // Checking correct parameters syntax 
         if (taskArgs.mainOp == "price" || taskArgs.mainOp == "purchase" || taskArgs.mainOp == "deposit" || taskArgs.mainOp == "retire" || taskArgs.mainOp == "transfer-eth" || taskArgs.mainOp == "transfer-tru" || taskArgs.mainOp == "withdraw") {
-            var contract;
-            switch (hre.network.name) {
-                case "mainnet":
-                    contract = truebitmain;
-                    break;
-                case "hardhat":
-                    contract = truebitmain;
-                    break;
-                case "goerli":
-                    contract = truebitgoerli;
-                    break;
-            }
+           //get accounts
+            const accounts = await hre.ethers.getSigners();
+            // contracts
+           var contract = myNetwork.network();
+
             if (taskArgs.mainOp == "price") {
                 // Tru price
                 const trucontract = await hre.ethers.getContractAt(contract.purchase.abi, contract.purchase.address);
@@ -117,6 +98,7 @@ task("token", "Token Operations: prices, purchase, deposit, transfer-eth, transf
                 } catch (err) {
                     console.error(`Unable to purchase.  ${err}`)
                 }
+
                 
             }
             if (taskArgs.mainOp == "deposit") {
@@ -194,21 +176,11 @@ task("token", "Token Operations: prices, purchase, deposit, transfer-eth, transf
 // Check balance
 task("balance", "Prints an account's balance")
     .addOptionalParam("a")
-    .setAction(async (taskArgs) => {
-        var contract;
+    .setAction(async (taskArgs, hre) => {
         //get accounts
         const accounts = await hre.ethers.getSigners();
-        switch (hre.network.name) {
-            case "mainnet":
-                contract = truebitmain;
-                break;
-            case "hardhat":
-                contract = truebitgoerli;
-                break;
-            case "goerli":
-                contract = truebitgoerli;
-                break;
-        }
+        // contracts
+        var contract = myNetwork.network();
         //const accounts = await hre.ethers.getSigners();
         const balance = await accounts[taskArgs.a].getBalance();
         console.info("balance: \n   Address: ", accounts[taskArgs.a].address);
@@ -229,7 +201,7 @@ task("balance", "Prints an account's balance")
 task("Impersonate", "Impersonate account and provide ETH balance")
     .addPositionalParam("param1")
     .addPositionalParam("account")
-    .setAction(async (taskArgs) => {
+    .setAction(async (taskArgs, hre) => {
         if (taskArgs.param1 == "true") {
             await hre.network.provider.request({
                 method: "hardhat_impersonateAccount",
@@ -239,15 +211,8 @@ task("Impersonate", "Impersonate account and provide ETH balance")
                 taskArgs.account,
                 "0xFB900000000000000",
             ]);
-            var contract;
-            switch (hre.network.name) {
-                case "mainnet":
-                    contract = truebitmain;
-                    break;
-                case "hardhat":
-                    contract = truebitgoerli;
-                    break;
-            }
+            // contracts
+            var contract = myNetwork.network();
             const accountip = await hre.ethers.getSigner(taskArgs.account);
             console.info("balance: \n   Address: ", accountip.address);
             const balance = await accountip.getBalance();
@@ -278,21 +243,12 @@ task("Impersonate", "Impersonate account and provide ETH balance")
 
 // Check Bonus per task
 task("bonus", "Display current per task subsidy")
-    .setAction(async (taskArgs) => {
-        var contract;
+    .setAction(async (taskArgs, hre) => {
+        
         //get accounts
         const accounts = await hre.ethers.getSigners();
-        switch (hre.network.name) {
-            case "mainnet":
-                contract = truebitmain;
-                break;
-            case "hardhat":
-                contract = truebitgoerli;
-                break;
-            case "goerli":
-                contract = truebitgoerli;
-                break;
-        }
+        // contracts
+        var contract = myNetwork.network();
         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
         const value = await incentivelayer.bonusTable();
 
@@ -311,18 +267,8 @@ task("verification", "check account ready for truebit")
     .addPositionalParam("account")
     .setAction(async (taskArgs, hre) => {     
         var verification = true;
-        var contract;
-        switch (hre.network.name) {
-            case "mainnet":
-                contract = truebitmain;
-                break;
-            case "hardhat":
-                contract = truebitgoerli;
-                break;
-            case "goerli":
-                contract = truebitgoerli;
-                break;
-        }
+        // contracts
+        var contract = myNetwork.network();
 
         const accountip = await hre.ethers.getSigner(taskArgs.account);
         const balance = await accountip.getBalance();
