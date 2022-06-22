@@ -238,6 +238,7 @@ task("impersonate", "Impersonate account and provide ETH balance")
                 method: "hardhat_stopImpersonatingAccount",
                 params: [taskArgs.account],
             });
+            console.info("Impersonate ended");
         }
     });
 
