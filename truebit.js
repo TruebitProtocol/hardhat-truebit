@@ -198,7 +198,7 @@ task("balance", "Prints an account's balance")
 
 // Impersonate 
 // get Balance impersonating specific account 
-task("Impersonate", "Impersonate account and provide ETH balance")
+task("impersonate", "Impersonate account and provide ETH balance")
     .addPositionalParam("param1")
     .addPositionalParam("account")
     .setAction(async (taskArgs, hre) => {

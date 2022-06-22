@@ -32,10 +32,10 @@ npx hardhat balance --a 0 --network goerli
 npx hardhat bonus
 
 #Impersonate account for balance
-npx hardhat Impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
+npx hardhat impersonate true 0x2F25f5DF360305977Fef8F6730883a787785B802
 
 #Stop Impersonate account for balance
-npx hardhat Impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
+npx hardhat impersonate false 0x2F25f5DF360305977Fef8F6730883a787785B802
 
 #verify the account ready to submit task, solve or verify
 npx hardhat verification  0x1F04a03F5fBF7fD20EC461efC38f8827B2E6AF6a
