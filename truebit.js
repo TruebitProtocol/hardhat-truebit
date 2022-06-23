@@ -159,7 +159,7 @@ task("token", "Token Operations: prices, purchase, deposit, transfer-eth, transf
                 const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
                 if (ethers.utils.parseUnits(taskArgs.v) > 0) {
                     try {
-                        await incentivelayer.withdrawDeposit(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 200000 });
+                        await incentivelayer.connect(accounts[taskArgs.a]).withdrawDeposit(ethers.utils.parseUnits(taskArgs.v), { from: accounts[taskArgs.a].address, gasLimit: 200000 });
                         console.info('Withdrew ' + taskArgs.v + ' TRU from IncentiveLayer ' + contract.incentiveLayer.address + ' to account ' + accounts[taskArgs.a].address + '.');
                     } catch (err) {
                         console.error(`Unable to withdraw.  ${err}`);
