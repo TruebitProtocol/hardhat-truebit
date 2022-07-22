@@ -198,7 +198,7 @@ task("balance", "Prints an account's balance")
 
 // Impersonate 
 // get Balance impersonating specific account 
-task("impersonate", "Impersonate account and provide ETH balance")
+/*task("impersonate", "Impersonate account and provide ETH balance")
     .addPositionalParam("param1")
     .addPositionalParam("account")
     .setAction(async (taskArgs, hre) => {
@@ -240,7 +240,7 @@ task("impersonate", "Impersonate account and provide ETH balance")
             });
             console.info("Impersonate ended");
         }
-    });
+    });*/
 
 // Check Bonus per task
 task("bonus", "Display current per task subsidy")
@@ -264,7 +264,7 @@ task("bonus", "Display current per task subsidy")
     });
 
 // Verify if the account is ready for  
-task("verification", "check account ready for truebit")
+/* task("verification", "check account ready for truebit")
     .addPositionalParam("account")
     .setAction(async (taskArgs, hre) => {     
         var verification = true;
@@ -311,4 +311,4 @@ task("verification", "check account ready for truebit")
         console.info("\x1b[37m \n");
         // }
 
-    });
+    }); */

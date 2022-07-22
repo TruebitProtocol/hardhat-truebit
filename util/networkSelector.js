@@ -9,9 +9,6 @@ module.exports = {
             case "mainnet":
                 contract = truebitmain;
                 break;
-            case "hardhat":
-                contract = truebitgoerli;
-                break;
             case "localhost":
                 contract = truebitgoerli;
                 break;

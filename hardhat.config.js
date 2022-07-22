@@ -28,18 +28,7 @@ module.exports = {
   
   solidity: "0.8.4",
   networks: {
-    hardhat: {
-      //chainId: CHAIN_IDS.hardhat,
-      forking: {
-        // Forking Goerli or Mainnet
-        // Select the network to fork and un comment and modify /util/networkSelector.js  
-
-        //url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
-        url: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
-        
-      },
-    },
-    
+  
     mainnet: {
       chainId: 1,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // ${INFURA_KEY} - must be your API key in process.env
