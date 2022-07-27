@@ -5,7 +5,7 @@
 Try running some of the following tasks:
 
 ```shell
-To fork Goerli or mainnet, change configuration in hardhat.config and execute:
+To fork goerli or mainnet, change configuration in hardhat.config and execute:
 
 npx hardhat token price --network goerli
 
@@ -13,16 +13,16 @@ npx hardhat token price --network goerli
 npx hardhat run scripts/truebitprices.js --network mainnet
 
 # Send task using especific network  
-npx hardhat run scripts/truebitprices.js --network Goerli
+npx hardhat run scripts/truebitprices.js --network goerli
 
 #token price
-npx hardhat token price --network Goerli
+npx hardhat token price --network goerli
 
 #license price
-npx hardhat license price --network Goerli
+npx hardhat license price --network goerli
 
 #license check
-npx hardhat license check --a 1 --network Goerli
+npx hardhat license check --a 1 --network goerli
 
 #balance
 npx hardhat balance --a 0 --network goerli 
@@ -34,7 +34,7 @@ npx hardhat bonus --network goerli
 npx hardhat balance --a 0 --network goerli
 
 # Test Truebit network reach
-npx hardhat --network Goerli test
+npx hardhat --network goerli test
 
 #update commands
 
