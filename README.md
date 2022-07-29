@@ -5,7 +5,6 @@
 Try running some of the following tasks:
 
 ```shell
-To fork goerli or mainnet, change configuration in hardhat.config and execute:
 
 npx hardhat token price --network goerli
 
@@ -61,14 +60,14 @@ npx hardhat clean
 
 npx hardhat help
 
-```
 
-Forking with ganache
+#Forking with ganache
 
-Launch Ganache
+#Launch Ganache
 
 ganache --fork.url https://goerli.infura.io/v3/<YOUR INFURA API KEY> --miner.blockTime 5
 
 npx hardhat token purchase --v 10 --a 2 --network localhost
 
 npx hardhat token deposit --v 20 --a 1 --network localhost
+```
