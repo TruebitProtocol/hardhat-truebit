@@ -339,7 +339,7 @@ task("process-status", "Stops a running process on TruebitOS")
         try{ 
             if (["solver","verifier"].includes(taskArgs.mainOp)) {
                 const message = await getProcessStatus(taskArgs.mainOp,{processNumber: parseInt(taskArgs.p)});
-                console.info(message.data.logs.forEach(elm=>{console.info(elm)}));
+                message.data.logs.forEach((elm)=>{console.info(elm)});
             } else {
                 console.info("Check syntax error in parameters");
             }
