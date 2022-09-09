@@ -1,5 +1,5 @@
 
-require('dotenv').config({ path: require('find-config')('process.env') });
+require('dotenv').config({ path: require('find-config')('.env') });
 require("./truebit");
 
 

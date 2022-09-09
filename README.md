@@ -35,7 +35,7 @@ npx hardhat balance --a 0 --network goerli
 # Test Truebit network reach
 npx hardhat --network goerli test
 
-#update commands
+#updated commands
 
 npx hardhat license purchase --a 0 --network goerli
 
@@ -52,6 +52,14 @@ npx hardhat token transfer-eth --v 0.05 --a 0 --t 1 --network goerli
 npx hardhat token transfer-tru --v 1 --a 0 --t 1 --network goerli
 
 npx hardhat token withdraw --v 7 --a 0  --network goerli
+
+npx hardhat start {{ solver | verifier }} --a {{ accountIndex }} --network goerli
+
+npx hardhat stop {{ solver | verifier }} --p {{ processIndex }} --network goerli
+
+npx hardhat ps --network goerli
+
+npx hardhat status {{ solver | verifier }} --p {{ processIndex }} --network goerli
 
 
 npx hardhat accounts

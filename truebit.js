@@ -4,6 +4,8 @@ const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
 const myNetwork = require("./util/networkSelector");
+const { startProcess, getProcesses, stopProcess, getProcessStatus } = require("./tb-api");
+const { parseBoolean, parseInteger } = require("./util/utils");
 
 
 // Check License price, check and purchase
@@ -262,6 +264,90 @@ task("bonus", "Display current per task subsidy")
         console.info("     %s TRU for split among Verifiers", verifierAmount);
 
     });
+
+task("start", "Starts a new process on TruebitOS")
+    .addPositionalParam("mainOp")
+    .addOptionalParam("a",'Index of web3 account to use (default = 0)')
+    .addOptionalParam("t",'Solver will give bogus solutions, Verifier will challenge correct solutions')
+    .addOptionalParam("l",'Set minimum TRU reward (resp. Verifier tax) for participation, default = 0')
+    .addOptionalParam("r",'Resume processes with bonded deposits from <num> blocks behind current block')
+    .addOptionalParam("p",'Set minimum ratio of reward (resp. Verifier tax) to blockLimit, default = 0')
+
+    .setAction(async (taskArgs, hre) => {
+        try{ 
+            if (["solver","verifier"].includes(taskArgs.mainOp)) {
+                const account= parseInteger(taskArgs.a)
+                const test = parseBoolean(taskArgs.t);
+                const limit = parseInteger(taskArgs.l);
+                const recover = parseInteger(taskArgs.r);
+                const price = parseInteger(taskArgs.p);
+                const message = await startProcess(taskArgs.mainOp,{account, test,limit,recover,price});
+                console.info(message.data);
+            } else {
+                console.info("Check syntax error in parameters");
+            }
+        }
+        catch(err){
+            console.info(err.message);
+        }
+
+});
+
+task("stop", "Stops a running process on TruebitOS")
+    .addPositionalParam("mainOp")
+    .addOptionalParam("p")
+    .setAction(async (taskArgs, hre) => {
+        try{ 
+            if (["solver","verifier"].includes(taskArgs.mainOp)) {
+                const message = await stopProcess(taskArgs.mainOp,{processNumber: parseInt(taskArgs.p)});
+                console.info(message.data);
+            } else {
+                console.info("Check syntax error in parameters");
+            }
+        }
+        catch(err){
+            console.info(err.message);
+        }
+});
+
+task("ps", "List all processes running on TruebitOS")
+    .setAction(async (taskArgs, hre) => {
+        try{
+        const processes = (await getProcesses()).data;
+        if(!processes.solvers.length && !processes.verifiers.length){
+            throw new Error("There are no processes running")
+        }
+        console.info('SOLVERS:');
+        processes.solvers.forEach((elm,index)=>{
+            console.info(`${index}) ${elm.address}`)
+        })
+        console.info('VERIFIERS:');
+        processes.verifiers.forEach((elm,index)=>{
+            console.info(`${index}) ${elm.address}`)
+        })
+        }
+        catch(err){
+            console.info(err.message);
+        }
+
+});
+
+task("process-status", "Stops a running process on TruebitOS")
+    .addPositionalParam("mainOp")
+    .addOptionalParam("p")
+    .setAction(async (taskArgs, hre) => {
+        try{ 
+            if (["solver","verifier"].includes(taskArgs.mainOp)) {
+                const message = await getProcessStatus(taskArgs.mainOp,{processNumber: parseInt(taskArgs.p)});
+                console.info(message.data.logs.forEach(elm=>{console.info(elm)}));
+            } else {
+                console.info("Check syntax error in parameters");
+            }
+        }
+        catch(err){
+            console.info(err.message);
+        }
+});
 
 // Verify if the account is ready for  
 /* task("verification", "check account ready for truebit")
