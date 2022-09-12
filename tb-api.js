@@ -8,7 +8,7 @@ exports.startProcess= async (processType,params)=>{
         if(processType != PROCESS.SOLVER && processType !=PROCESS.VERIFIER){
             throw new Error(`Invalid process type`);
         }
-        return await axios.post(`${API_URL}/api/${processType}/init`,
+        return await axios.post(`${API_URL}/api/${processType}/start`,
         {
             "account":params.account,
             "test": params.test, 
