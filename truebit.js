@@ -4,7 +4,7 @@ const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
 const myNetwork = require("./util/networkSelector");
-const { startProcess, getProcesses, stopProcess, getProcessStatus } = require("./tb-api");
+const { startProcess, getProcesses, stopProcess, getProcessStatus, getTasks, submitTask } = require("./tb-api");
 const { parseBoolean, parseInteger } = require("./util/utils");
 
 
@@ -295,7 +295,7 @@ task("start", "Starts a new process on TruebitOS")
 
 task("stop", "Stops a running process on TruebitOS")
     .addPositionalParam("mainOp")
-    .addOptionalParam("p")
+    .addParam("p",'Index of process running')
     .setAction(async (taskArgs, hre) => {
         try{ 
             if (["solver","verifier"].includes(taskArgs.mainOp)) {
@@ -334,13 +334,41 @@ task("ps", "List all processes running on TruebitOS")
 
 task("process-status", "Stops a running process on TruebitOS")
     .addPositionalParam("mainOp")
-    .addOptionalParam("p")
+    .addParam("p",'Index of process running')
     .setAction(async (taskArgs, hre) => {
         try{ 
             if (["solver","verifier"].includes(taskArgs.mainOp)) {
                 const message = await getProcessStatus(taskArgs.mainOp,{processNumber: parseInt(taskArgs.p)});
                 message.data.logs.forEach((elm)=>{console.info(elm)});
             } else {
+                console.info("Check syntax error in parameters");
+            }
+        }
+        catch(err){
+            console.info(err.message);
+        }
+});
+
+task("task", "List all task submitted on TruebitOS")
+    .addPositionalParam("mainOp")
+    .addOptionalParam("a",'Index of web3 account to use (default = 0)')
+    .addOptionalParam("f",'File name with task metadata inside file system')
+    .setAction(async (taskArgs, hre) => {
+        try{ 
+            if (["list"].includes(taskArgs.mainOp)) {
+                const tasks = await getTasks();
+                console.log(tasks.data.data);
+            } 
+            else if (["submit"].includes(taskArgs.mainOp)) {
+                if(taskArgs.a || taskArgs.f){
+                    console.log("Submitting task to blockchain...")
+                    const message = await submitTask({account: parseInt(taskArgs.a),taskFile: taskArgs.f});
+                }
+                else{
+                    console.info("Provide account and file arguments")
+                }
+            }
+            else {
                 console.info("Check syntax error in parameters");
             }
         }

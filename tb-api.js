@@ -54,3 +54,35 @@ exports.getProcessStatus = async (processType,params) =>{
         throw new Error(err.response.data);
     }
 }
+
+exports.getTasks = async (params) =>{
+    try{
+        return await axios.get(`${API_URL}/api/tasks`);
+    }
+    catch(err){
+        throw new Error(err);
+    }
+}
+
+exports.getTaskStatus = async (params) =>{
+    try{
+        return await axios.get(`${API_URL}/api/tasks/${params.taskHash}`);
+    }
+    catch(err){
+        throw new Error(err.response.data);
+    }
+}
+
+exports.submitTask = async (params) =>{
+    try{
+        return await axios.post(`${API_URL}/api/tasks/submit`,
+        {
+            "account":params.account,
+            "taskFile":params.taskFile
+        });
+    }
+    catch(err){
+        throw new Error(err.response.data);
+    }
+}
+
