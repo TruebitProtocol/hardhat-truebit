@@ -61,6 +61,9 @@ npx hardhat ps --network goerli
 
 npx hardhat status {{ solver | verifier }} --p {{ processIndex }} --network goerli
 
+npx hardhat task list --network goerli
+
+npx hardhat task submit --a 0 --f factorial.json --network goerli
 
 npx hardhat accounts
 npx hardhat compile
