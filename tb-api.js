@@ -3,6 +3,16 @@ const { PROCESS } = require("./enums");
 
 const API_URL = process.env.API_URL;
 
+const handleApiError = (err)=>{
+    if(err.response){
+        throw new Error(err.response.data)    
+    }
+    else{
+        throw new Error(err);
+    }
+}
+
+
 exports.startProcess= async (processType,params)=>{
     try{
         if(processType != PROCESS.SOLVER && processType !=PROCESS.VERIFIER){
@@ -18,7 +28,7 @@ exports.startProcess= async (processType,params)=>{
         });
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err)   
     }
 }
 
@@ -33,7 +43,7 @@ exports.stopProcess=async (processType,params)=>{
         });
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err)    
     }
 }
 
@@ -42,7 +52,7 @@ exports.getProcesses = async () =>{
         return await axios.get(`${API_URL}/api/processes/`);
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err)    
     }
 }
 
@@ -51,7 +61,7 @@ exports.getProcessStatus = async (processType,params) =>{
         return await axios.get(`${API_URL}/api/${processType}/status/${params.processNumber}`);
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err);   
     }
 }
 
@@ -60,7 +70,7 @@ exports.getTasks = async (params) =>{
         return await axios.get(`${API_URL}/api/tasks`);
     }
     catch(err){
-        throw new Error(err);
+        handleApiError(err);
     }
 }
 
@@ -69,7 +79,7 @@ exports.getTaskStatus = async (params) =>{
         return await axios.get(`${API_URL}/api/tasks/${params.taskHash}`);
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err);  
     }
 }
 
@@ -82,7 +92,7 @@ exports.submitTask = async (params) =>{
         });
     }
     catch(err){
-        throw new Error(err.response.data);
+        handleApiError(err);    
     }
 }
 
