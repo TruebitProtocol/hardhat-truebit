@@ -4,7 +4,7 @@ const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
 const myNetwork = require("./util/networkSelector");
-const { startProcess, getProcesses, stopProcess, getProcessStatus, getTasks, submitTask } = require("./tb-api");
+const { startProcess, getProcesses, stopProcess, getProcessStatus, getTasks, submitTask, getTaskParameters, getTaskStatus } = require("./tb-api");
 const { parseBoolean, parseInteger } = require("./util/utils");
 
 
@@ -353,6 +353,7 @@ task("task", "List all task submitted on TruebitOS")
     .addPositionalParam("mainOp")
     .addOptionalParam("a",'Index of web3 account to use (default = 0)')
     .addOptionalParam("f",'File name with task metadata inside file system')
+    .addOptionalParam("h", "Hash of the task submitted")
     .setAction(async (taskArgs, hre) => {
         try{ 
             if (["list"].includes(taskArgs.mainOp)) {
@@ -360,13 +361,33 @@ task("task", "List all task submitted on TruebitOS")
                 console.log(tasks.data.data);
             } 
             else if (["submit"].includes(taskArgs.mainOp)) {
-                if(taskArgs.a || taskArgs.f){
+                if(taskArgs.a && taskArgs.f){
                     console.log("Submitting task to blockchain...")
                     const message = await submitTask({account: parseInt(taskArgs.a),taskFile: taskArgs.f});
                     console.info(`${message.data.message} with hash ${message.data.hash}`);
                 }
                 else{
-                    console.info("Provide account and file arguments")
+                    console.info("Please provide account and file arguments")
+                }
+            }
+            else if (["parameters"].includes(taskArgs.mainOp)) {
+                if(taskArgs.h){
+                    const message = await getTaskParameters({taskHash: taskArgs.h});
+                    for(const key in message.data.data){
+                        console.info(`${key}: ${message.data.data[key]}`)
+                    }
+                }
+                else{
+                    console.info("Please provide task hash")
+                }
+            }
+            else if (["status"].includes(taskArgs.mainOp)) {
+                if(taskArgs.h){
+                    const message = await getTaskStatus({taskHash: taskArgs.h});
+                    message.data.data.forEach((elm)=>{console.info(elm)});
+                }
+                else{
+                    console.info("Please provide task hash")
                 }
             }
             else {
