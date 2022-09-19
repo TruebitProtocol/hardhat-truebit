@@ -363,6 +363,7 @@ task("task", "List all task submitted on TruebitOS")
                 if(taskArgs.a || taskArgs.f){
                     console.log("Submitting task to blockchain...")
                     const message = await submitTask({account: parseInt(taskArgs.a),taskFile: taskArgs.f});
+                    console.info(message);
                 }
                 else{
                     console.info("Provide account and file arguments")
