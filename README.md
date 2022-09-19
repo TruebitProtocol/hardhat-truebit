@@ -59,7 +59,7 @@ npx hardhat stop {{ solver | verifier }} --p {{ processIndex }} --network goerli
 
 npx hardhat ps --network goerli
 
-npx hardhat status {{ solver | verifier }} --p {{ processIndex }} --network goerli
+npx hardhat process-status {{ solver | verifier }} --p {{ processIndex }} --network goerli
 
 npx hardhat task list --network goerli
 
