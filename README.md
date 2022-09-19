@@ -65,6 +65,10 @@ npx hardhat task list --network goerli
 
 npx hardhat task submit --a 0 --f factorial.json --network goerli
 
+npx hardhat task status --h {{ taskHash }} --network localhost
+
+npx hardhat task parameters --h {{ taskHash }} --network localhost
+
 npx hardhat accounts
 npx hardhat compile
 npx hardhat clean
