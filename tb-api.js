@@ -76,7 +76,16 @@ exports.getTasks = async (params) =>{
 
 exports.getTaskStatus = async (params) =>{
     try{
-        return await axios.get(`${API_URL}/api/tasks/${params.taskHash}`);
+        return await axios.get(`${API_URL}/api/tasks/${params.taskHash}/status`);
+    }
+    catch(err){
+        handleApiError(err);  
+    }
+}
+
+exports.getTaskParameters = async (params) =>{
+    try{
+        return await axios.get(`${API_URL}/api/tasks/${params.taskHash}/parameters`);
     }
     catch(err){
         handleApiError(err);  
