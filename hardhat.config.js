@@ -7,7 +7,7 @@ task("accounts", "Prints the  of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
-    console.log(account.address);
+    console.info(account.address);
   }
 });
 

@@ -82,3 +82,17 @@ npx hardhat token purchase --v 10 --a 2 --network localhost
 
 npx hardhat token deposit --v 20 --a 1 --network localhost
 ```
+
+
+# To run tests
+
+### First, run a local instance of ethereum blockchain with ganache:
+`ganache --fork.url https://goerli.infura.io/v3/<YOUR INFURA API KEY> --miner.blockTime 5`
+
+### Execute tests command:
+`npx hardhat test --network localhost`
+
+### Dependencies
+- mocha
+- chai
+- sinon
