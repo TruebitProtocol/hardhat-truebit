@@ -35,7 +35,7 @@ npx hardhat balance --a 0 --network goerli
 # Test Truebit network reach
 npx hardhat --network goerli test
 
-#update commands
+#updated commands
 
 npx hardhat license purchase --a 0 --network goerli
 
@@ -53,6 +53,21 @@ npx hardhat token transfer-tru --v 1 --a 0 --t 1 --network goerli
 
 npx hardhat token withdraw --v 7 --a 0  --network goerli
 
+npx hardhat start {{ solver | verifier }} --a {{ accountIndex }} --network goerli
+
+npx hardhat stop {{ solver | verifier }} --p {{ processIndex }} --network goerli
+
+npx hardhat ps --network goerli
+
+npx hardhat process-status {{ solver | verifier }} --p {{ processIndex }} --network goerli
+
+npx hardhat task list --network goerli
+
+npx hardhat task submit --a 0 --f factorial.json --network goerli
+
+npx hardhat task status --h {{ taskHash }} --network localhost
+
+npx hardhat task parameters --h {{ taskHash }} --network localhost
 
 npx hardhat accounts
 npx hardhat compile
@@ -71,3 +86,17 @@ npx hardhat token purchase --v 10 --a 2 --network localhost
 
 npx hardhat token deposit --v 20 --a 1 --network localhost
 ```
+
+
+# To run tests
+
+### First, run a local instance of ethereum blockchain with ganache:
+`ganache --fork.url https://goerli.infura.io/v3/<YOUR INFURA API KEY> --miner.blockTime 5`
+
+### Execute tests command:
+`npx hardhat test --network localhost`
+
+### Dependencies
+- mocha
+- chai
+- sinon
