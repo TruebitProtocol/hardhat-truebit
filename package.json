@@ -12,7 +12,6 @@
     "hardhat": "^2.9.6"
   },
   "dependencies": {
-    "@symblox/hardhat-dotenv": "^1.0.0",
     "axios": "^0.27.2",
     "dotenv": "^16.0.2",
     "find-config": "^1.0.0",

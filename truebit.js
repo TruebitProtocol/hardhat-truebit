@@ -3,10 +3,13 @@ const { keccak256 } = require("ethers/lib/utils");
 const truebitgoerli = require("./client/goerli.json");
 const truebitmain = require("./client/mainnet.json");
 const web3 = require("web3");
+const fs = require("fs");
+const path = require("path");
 const myNetwork = require("./util/networkSelector");
 const { startProcess, getProcesses, stopProcess, getProcessStatus, getTasks, submitTask, getTaskParameters, getTaskStatus } = require("./tb-api");
 const { parseBoolean, parseInteger } = require("./util/utils");
 
+const {decryptJsonWalletSync} = require('@ethersproject/json-wallets');
 
 // Check License price, check and purchase
 task("license", "Prints license price")
@@ -399,6 +402,19 @@ task("task", "List all task submitted on TruebitOS")
         }
 });
 
+task("pk", "Receives private key JSON file and retrieves private key string")
+    .addParam("file","Relative path to directory of private key in JSON keystore format")
+    .addParam("password","Decrypt password")
+    .setAction(async (taskArgs, hre) => {
+        try{
+        const pkFile = fs.readFileSync(path.join(__dirname,taskArgs.file),'utf8');
+        const decryptedPK = decryptJsonWalletSync(pkFile,taskArgs.password);
+        console.info("Address: ", decryptedPK.address);
+        console.info("Private key: ", decryptedPK.privateKey);
+        }catch(err){
+            console.error(err.message)
+        }
+    });
 // Verify if the account is ready for  
 /* task("verification", "check account ready for truebit")
     .addPositionalParam("account")
