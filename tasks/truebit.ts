@@ -4,6 +4,9 @@ import { task } from 'hardhat/config';
 import { HardhatRuntimeEnvironment } from 'hardhat/types/index';
 import { parseBoolean, parseInteger } from '../utils/parsers';
 import { Process, ProcessStartParameters, ProcessStopParameters } from '../types/apiTypes';
+import fs from 'fs';
+import path from 'path';
+import { decryptJsonWalletSync } from '@ethersproject/json-wallets';
 
 task('accounts', 'Prints the addresses of accounts', async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -405,6 +408,20 @@ task('task', 'List all task submitted on TruebitOS')
       } else {
         console.info('Check syntax error in parameters');
       }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+task('pk', 'Receives private key JSON file and retrieves private key string')
+  .addParam('file', 'Relative path to directory of private key in JSON keystore format')
+  .addParam('password', 'Decrypt password')
+  .setAction(async (taskArgs, hre) => {
+    try {
+      const pkFile = fs.readFileSync(path.join(__dirname, taskArgs.file), 'utf8');
+      const decryptedPK = decryptJsonWalletSync(pkFile, taskArgs.password);
+      console.info('Address: ', decryptedPK.address);
+      console.info('Private key: ', decryptedPK.privateKey);
     } catch (err) {
       console.error(err);
     }

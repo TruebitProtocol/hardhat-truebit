@@ -7,6 +7,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@ethersproject/json-wallets": "^5.7.0",
     "@fastify/pre-commit": "^2.0.2",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
