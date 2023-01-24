@@ -1,4 +1,18 @@
 {
-    "json.maxItemsComputed": 15000,
-    "editor.foldingMaximumRegions": 25000
+  "eslint.alwaysShowStatus": true,
+  "eslint.lintTask.enable": true,
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.scrollback": 10000,
+  "json.maxItemsComputed": 15000,
+  "editor.foldingMaximumRegions": 25000,
+  "cSpell.words": ["nomiclabs", "truebit"]
 }
