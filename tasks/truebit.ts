@@ -416,7 +416,7 @@ task('task', 'List all task submitted on TruebitOS')
 task('pk', 'Receives private key JSON file and retrieves private key string')
   .addParam('file', 'Relative path to directory of private key in JSON keystore format')
   .addParam('password', 'Decrypt password')
-  .setAction(async (taskArgs, hre) => {
+  .setAction(async (taskArgs) => {
     try {
       const pkFile = fs.readFileSync(path.join(__dirname, taskArgs.file), 'utf8');
       const decryptedPK = decryptJsonWalletSync(pkFile, taskArgs.password);
