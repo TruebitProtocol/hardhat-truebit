@@ -5,7 +5,7 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@ethersproject/json-wallets": "^5.7.0",
     "@fastify/pre-commit": "^2.0.2",
