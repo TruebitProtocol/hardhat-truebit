@@ -49,6 +49,8 @@ This project is meant to test Truebit.
    `npm run check-types`<BR>
 6. Check for available dependencies updates:<BR>
    `npx ncu`
+7. Pre-commit hook:<BR>
+   This hook will be executed every time you do a commit, and it will execute lint and check-types package.json scripts. If any of those have a finding it won't allow you to finish the commit until you fix the issue.
 
 ## Try running some of the following tasks:
 
