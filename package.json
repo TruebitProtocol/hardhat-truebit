@@ -13,7 +13,7 @@
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
-    "axios": "^1.2.3",
+    "axios": "^1.2.4",
     "dotenv": "^16.0.3",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
@@ -21,6 +21,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "hardhat": "^2.12.6",
+    "npm-check-updates": "^16.6.3",
     "prettier": "^2.8.3",
     "ts-sinon": "^2.0.2",
     "typescript": "^4.9.4"
