@@ -27,7 +27,7 @@ This project is meant to test Truebit.
 4. Nodejs environment:<BR>
    Hardhat supports the latest LTS version of NodeJS.
    The project has a package.json property to set the minimum versions of node and npm:
-   ```
+   ```json
    "engines": {
     "npm": ">=8.19.3",
     "node": ">=18.13.0"
