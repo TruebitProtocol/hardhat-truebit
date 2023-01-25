@@ -12,6 +12,7 @@ This project is meant to test Truebit.
 2. Visual Studio Code required extensions:<BR>
    `"dbaeumer.vscode-eslint"`,<BR>
    `"esbenp.prettier-vscode"`,<BR>
+   `"nomicfoundation.hardhat-solidity"`<BR>
    VSCode extesion install command:<BR>
    `code --install-extension <publisher.extension>`
 3. Visual Studio Code recommended extensions:<BR>
@@ -23,7 +24,6 @@ This project is meant to test Truebit.
    `"VisualStudioExptTeam.vscodeintellicode"`,<BR>
    `"wayou.vscode-todo-highlight"`,<BR>
    `"gruntfuggly.todo-tree"`,<BR>
-   `"nomicfoundation.hardhat-solidity"`<BR>
 4. Nodejs environment:<BR>
    Hardhat supports the latest LTS version of NodeJS.
    The project has a package.json property to set the minimum versions of node and npm:
