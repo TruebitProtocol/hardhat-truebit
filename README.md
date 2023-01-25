@@ -1,6 +1,54 @@
 # What is Truebit?
-[Truebit](https://truebit.io/) is a blockchain enhancement which enables smart contracts to securely perform complex computations in standard programming languages at reduced gas costs. 
 
+[Truebit](https://truebit.io/) is a blockchain enhancement which enables smart contracts to securely perform complex computations in standard programming languages at reduced gas costs.
+
+## Hardhat standard development environment
+
+This project is meant to test Truebit.
+
+### Prerequisites:
+
+1. Visual Studio Code (latest version)
+2. Visual Studio Code required extensions:<BR>
+   `"dbaeumer.vscode-eslint"`,<BR>
+   `"esbenp.prettier-vscode"`,<BR>
+   VSCode extesion install command:<BR>
+   `code --install-extension <publisher.extension>`
+3. Visual Studio Code recommended extensions:
+   `"nick-rudenko.back-n-forth"`,<BR>
+   `"streetsidesoftware.code-spell-checker"`,<BR>
+   `"mhutchie.git-graph"`,<BR>
+   `"donjayamanne.githistory"`,<BR>
+   `"eamodio.gitlens"`,<BR>
+   `"VisualStudioExptTeam.vscodeintellicode"`,<BR>
+   `"wayou.vscode-todo-highlight"`,<BR>
+   `"gruntfuggly.todo-tree"`,<BR>
+   `"nomicfoundation.hardhat-solidity"`<BR>
+4. Nodejs environment:
+   `"engines": {
+"npm": ">=8.19.3",
+"node": ">=18.13.0"
+},`
+
+### Getting the project working
+
+1. Install dependencies:<BR>
+   `npm install`
+2. Set in the `.env` file the required environment variables
+3. Setup and run the Ethereum network and TruebitOS
+4. Execute the tests or tasks:<BR>
+   Note: Please note that localhost is the default network, so it is not necessary to set it on the commands.<BR>
+   If you want to use a different network please add `--network [networkName]` at the end of the commands.<BR>
+   Tests (example):<BR>
+   `npx hardhat test`<BR>
+   Tasks (example):<BR>
+   `npx hardhat accounts`<BR>
+   `npx hardhat balance --a 0`<BR>
+5. Execute ESlint and TypeScript check types:<BR>
+   `npm run lint`<BR>
+   `npm run check-types`<BR>
+6. Check for available dependencies updates:<BR>
+   `npx ncu`
 
 ## Try running some of the following tasks:
 
@@ -9,7 +57,7 @@
 npx hardhat token price --network goerli
 npx hardhat run scripts/truebitprices.js --network mainnet
 
-# Send task using especific network  
+# Send task using especific network
 npx hardhat run scripts/truebitprices.js --network goerli
 
 # Token price
@@ -22,7 +70,7 @@ npx hardhat license price --network goerli
 npx hardhat license check --a 1 --network goerli
 
 # Balance
-npx hardhat balance --a 0 --network goerli 
+npx hardhat balance --a 0 --network goerli
 
 # Bonus
 npx hardhat bonus --network goerli
@@ -73,7 +121,9 @@ npx hardhat clean
 
 npx hardhat help
 ```
+
 ## Decrypt private key in JSON keysore format
+
 ```
 npx hardhat pk --file pk.json --password test
 ```
@@ -90,16 +140,12 @@ npx hardhat token purchase --v 10 --a 2 --network localhost
 npx hardhat token deposit --v 20 --a 1 --network localhost
 ```
 
-
 # To run tests
 
 ### First, run a local instance of ethereum blockchain with ganache:
+
 `ganache --fork.url https://goerli.infura.io/v3/<YOUR INFURA API KEY> --miner.blockTime 5`
 
 ### Execute tests command:
-`npx hardhat test --network localhost`
 
-### Dependencies
-- mocha
-- chai
-- sinon
+`npx hardhat test --network localhost`
