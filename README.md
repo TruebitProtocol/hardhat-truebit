@@ -53,6 +53,10 @@ This project is meant to test Truebit.
    This hook will be executed every time you do a commit, and it will execute lint and check-types package.json scripts. If any of those have a finding it won't allow you to finish the commit until you fix the issue.
 8. Github pull request template `.github/PULL_REQUEST_TEMPLATE.md`<BR>
    This template will show up every time you create a PR as description template.
+9. For coding styling and other rules please see the following configuration files:<BR>
+   `.prettierrc`<BR>
+   `.eslintrc.json`<BR>
+   This VSCode workspace configuration file `.vscode/settings.json` is set to auto format every time you paste or save a file.<BR>
 
 ## Try running some of the following tasks:
 
