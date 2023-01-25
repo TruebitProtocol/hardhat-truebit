@@ -25,10 +25,14 @@ This project is meant to test Truebit.
    `"gruntfuggly.todo-tree"`,<BR>
    `"nomicfoundation.hardhat-solidity"`<BR>
 4. Nodejs environment:<BR>
-   `"engines": {
-"npm": ">=8.19.3",
-"node": ">=18.13.0"
-},`
+   Hardhat supports the latest LTS version of NodeJS.
+   The project has a package.json property to set the minimum versions of node and npm:
+   ```
+   "engines": {
+    "npm": ">=8.19.3",
+    "node": ">=18.13.0"
+   },
+   ```
 
 ### Getting the project working
 
@@ -50,7 +54,22 @@ This project is meant to test Truebit.
 6. Check for available dependencies updates:<BR>
    `npx ncu`
 7. Pre-commit hook:<BR>
-   This hook will be executed every time you do a commit, and it will execute lint and check-types package.json scripts. If any of those have a finding it won't allow you to finish the commit until you fix the issue.
+   This hook will be executed every time you do a commit, and it will execute lint and check-types package.json scripts. If any of those have a finding it won't allow you to finish the commit until you fix the issue.<BR>
+   This configuration is set on package.json
+   ```json
+   "scripts": {
+      "lint": "npx eslint . --ext .ts",
+      "check-types": "npx tsc --noEmit"
+    },
+    "pre-commit": {
+      "run": [
+        "lint",
+        "check-types"
+      ],
+      "silent": true,
+      "colors": true
+    }
+   ```
 8. Github pull request template `.github/PULL_REQUEST_TEMPLATE.md`<BR>
    This template will show up every time you create a PR as description template.
 9. For coding styling and other rules please see the following configuration files:<BR>
