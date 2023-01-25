@@ -84,7 +84,7 @@ This project is meant to test Truebit.
 npx hardhat token price --network goerli
 npx hardhat run scripts/truebitprices.js --network mainnet
 
-# Send task using especific network
+# Send task using specific network
 npx hardhat run scripts/truebitprices.js --network goerli
 
 # Token price
@@ -149,7 +149,7 @@ npx hardhat clean
 npx hardhat help
 ```
 
-## Decrypt private key in JSON keysore format
+## Decrypt private key in JSON keystore format
 
 ```
 npx hardhat pk --file pk.json --password test
