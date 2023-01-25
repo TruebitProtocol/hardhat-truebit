@@ -14,7 +14,7 @@ This project is meant to test Truebit.
    `"esbenp.prettier-vscode"`,<BR>
    VSCode extesion install command:<BR>
    `code --install-extension <publisher.extension>`
-3. Visual Studio Code recommended extensions:
+3. Visual Studio Code recommended extensions:<BR>
    `"nick-rudenko.back-n-forth"`,<BR>
    `"streetsidesoftware.code-spell-checker"`,<BR>
    `"mhutchie.git-graph"`,<BR>
