@@ -75,7 +75,7 @@ This project is meant to test Truebit.
 9. For coding styling and other rules please see the following configuration files:<BR>
    `.prettierrc`<BR>
    `.eslintrc.json`<BR>
-   This VSCode workspace configuration file `.vscode/settings.json` is set to auto format every time you paste or save a file.<BR>
+   This VSCode workspace configuration file `.vscode/settings.json` is set to auto format every time you paste or save a file using the plugin `"esbenp.prettier-vscode"` as default formatter.<BR>
 
 ## Try running some of the following tasks:
 
