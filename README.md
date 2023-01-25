@@ -24,7 +24,7 @@ This project is meant to test Truebit.
    `"wayou.vscode-todo-highlight"`,<BR>
    `"gruntfuggly.todo-tree"`,<BR>
    `"nomicfoundation.hardhat-solidity"`<BR>
-4. Nodejs environment:
+4. Nodejs environment:<BR>
    `"engines": {
 "npm": ">=8.19.3",
 "node": ">=18.13.0"
