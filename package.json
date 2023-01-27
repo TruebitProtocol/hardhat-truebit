@@ -13,7 +13,7 @@
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
-    "axios": "^1.2.4",
+    "axios": "^1.2.5",
     "dotenv": "^16.0.3",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
@@ -32,12 +32,14 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts",
-    "check-types": "npx tsc --noEmit"
+    "check-types": "npx tsc --noEmit",
+    "ncu": "npx ncu -e 2"
   },
   "pre-commit": {
     "run": [
       "lint",
-      "check-types"
+      "check-types",
+      "ncu"
     ],
     "silent": true,
     "colors": true
