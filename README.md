@@ -2,7 +2,7 @@
 
 [Truebit](https://truebit.io/) is a blockchain enhancement which enables smart contracts to securely perform complex computations in standard programming languages at reduced gas costs.
 
-## Hardhat standard development environment
+## Truebit - Hardhat standard development environment
 
 This project is meant to test Truebit.
 
@@ -10,20 +10,19 @@ This project is meant to test Truebit.
 
 1. Visual Studio Code (latest version)
 2. Visual Studio Code required extensions:<BR>
-   `"dbaeumer.vscode-eslint"`,<BR>
-   `"esbenp.prettier-vscode"`,<BR>
-   `"nomicfoundation.hardhat-solidity"`<BR>
+   ESLint: `"dbaeumer.vscode-eslint"`,<BR>
+   Prettier-Code Formatter: `"esbenp.prettier-vscode"`,<BR>
+   Solidity: `"nomicfoundation.hardhat-solidity"`<BR>
    VSCode extesion install command:<BR>
    `code --install-extension <publisher.extension>`
 3. Visual Studio Code recommended extensions:<BR>
-   `"nick-rudenko.back-n-forth"`,<BR>
-   `"streetsidesoftware.code-spell-checker"`,<BR>
-   `"mhutchie.git-graph"`,<BR>
-   `"donjayamanne.githistory"`,<BR>
-   `"eamodio.gitlens"`,<BR>
-   `"VisualStudioExptTeam.vscodeintellicode"`,<BR>
-   `"wayou.vscode-todo-highlight"`,<BR>
-   `"gruntfuggly.todo-tree"`,<BR>
+   Back & Forth: `"nick-rudenko.back-n-forth"`,<BR>
+   Code Spell Checker: `"streetsidesoftware.code-spell-checker"`,<BR>
+   Git Graph: `"mhutchie.git-graph"`,<BR>
+   Git History: `"donjayamanne.githistory"`,<BR>
+   GitLens — Git supercharged: `"eamodio.gitlens"`,<BR>
+   TODO Highlight: `"wayou.vscode-todo-highlight"`,<BR>
+   Todo Tree: `"gruntfuggly.todo-tree"`,<BR>
 4. Nodejs environment:<BR>
    Hardhat supports the latest LTS version of NodeJS.
    The project has a package.json property to set the minimum versions of node and npm:
@@ -38,8 +37,8 @@ This project is meant to test Truebit.
 
 1. Install dependencies:<BR>
    `npm install`
-2. Set in the `.env` file the required environment variables
-3. Setup and run the Ethereum network and TruebitOS
+2. Set in the `.env` file the required environment variables according to what it is indicated in `.env.example` file and the use scenario.
+3. Setup and run the Ethereum network and TruebitOS. Please follow the "Getting Started Guide" https://truebit.io/guide/prerequisites/
 4. Execute the tests or tasks:<BR>
    Note: Please note that localhost is the default network, so it is not necessary to set it on the commands.<BR>
    If you want to use a different network please add `--network [networkName]` at the end of the commands.<BR>
@@ -59,12 +58,14 @@ This project is meant to test Truebit.
    ```json
    "scripts": {
       "lint": "npx eslint . --ext .ts",
-      "check-types": "npx tsc --noEmit"
+      "check-types": "npx tsc --noEmit",
+      "ncu": "npx ncu -e 2"
     },
     "pre-commit": {
       "run": [
         "lint",
-        "check-types"
+        "check-types",
+        "ncu"
       ],
       "silent": true,
       "colors": true
