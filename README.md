@@ -56,9 +56,9 @@ Clone Truebit’s Hardhat repository; it has pre-configured networks and Truebit
 
 
 # Configuration Overview
-Open the folder with Visual Code [(Download VS Code)](https://code.visualstudio.com/download). Truebit’s hardhat repository has a generic configuration file, we will modify it and rename it as `.env`. You will modify this file to add your personal keys as you follow along. 
+Open the folder with Visual Code [(Download VS Code)](https://code.visualstudio.com/download). Truebit’s hardhat repository has a environment variables example file (`.env.example`), we will modify it and rename it as `.env`. You will modify this file to add your personal keys as you follow along. 
 
-`~/hardhat-truebit/process.env_example`
+`~/hardhat-truebit/.env.example`
 ```
 INFURA_KEY=<YOUR_API_KEY>
 ACCOUNT_PRIVATE_KEY1 = <YOUR ETHEREUM PRIVATE KEY>
