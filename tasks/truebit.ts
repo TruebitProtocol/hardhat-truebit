@@ -103,7 +103,7 @@ task('token', 'Token Operations: prices, purchase, deposit, transfer-eth, transf
         const purchaseContract = await hre.ethers.getContractAt(contract.purchase.abi, contract.purchase.address);
         //TRU Price
         const purchasePriceETH = await purchaseContract.getPurchasePrice(hre.ethers.utils.parseUnits(taskArgs.v));
-        const purchasePriceETHRef = await purchaseContract.getPurchasePrice(hre.ethers.utils.parseUnits('1000'));
+        const purchasePriceETHRef = await purchaseContract.getPurchasePrice(hre.ethers.utils.parseUnits('1'));
         // Tru BuyTRU
         try {
           const valuetrubuy = await purchaseContract
@@ -300,7 +300,7 @@ task('stop', 'Stops a running process on TruebitOS')
     try {
       if (['solver', 'verifier'].includes(taskArgs.mainOp)) {
         const parameters: ProcessStopParameters = {
-          processNumber: parseInt(taskArgs.p),
+          process: parseInt(taskArgs.p),
         };
         const message = await stopProcess(taskArgs.mainOp, parameters);
         console.info(message?.data);
@@ -331,7 +331,7 @@ task('ps', 'List all processes running on TruebitOS').setAction(async () => {
       throw new Error('processes is undefined');
     }
   } catch (err) {
-    console.error(err);
+    console.error((err as Error).message);
   }
 });
 

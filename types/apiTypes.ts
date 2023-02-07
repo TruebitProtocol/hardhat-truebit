@@ -13,7 +13,7 @@ export type ProcessStartParameters = {
 };
 export type ProcessStopResponse = string;
 export type ProcessStopParameters = {
-  processNumber: number;
+  process: number;
 };
 export type ProcessStatusResponse = {
   logs: string[];
