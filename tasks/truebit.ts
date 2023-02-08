@@ -19,7 +19,7 @@ task('accounts', 'Prints the addresses of accounts', async (taskArgs, hre) => {
 task('license', 'Prints license price')
   .addPositionalParam('param1')
   .addOptionalParam('a')
-  .setAction(async (taskArgs, hre: HardhatRuntimeEnvironmen): Promise<void> => {
+  .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment): Promise<void> => {
     // Checking correct parameters syntax
     if (taskArgs.param1 == 'price' || taskArgs.param1 == 'check' || taskArgs.param1 == 'purchase') {
       //get accounts

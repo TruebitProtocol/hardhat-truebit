@@ -10,7 +10,6 @@
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@ethersproject/json-wallets": "^5.7.0",
-    "@fastify/pre-commit": "^2.0.2",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
@@ -38,14 +37,5 @@
     "check-types": "npx tsc --noEmit",
     "ncu": "npx ncu -e 2",
     "prepare": "husky install"
-  },
-  "pre-commit": {
-    "run": [
-      "lint",
-      "check-types",
-      "ncu"
-    ],
-    "silent": true,
-    "colors": true
   }
 }
