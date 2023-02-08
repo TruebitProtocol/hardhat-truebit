@@ -23,6 +23,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "hardhat": "^2.12.6",
+    "husky": "^8.0.3",
     "npm-check-updates": "^16.6.5",
     "prettier": "^2.8.4",
     "ts-sinon": "^2.0.2",
@@ -36,14 +37,13 @@
     "lint": "npx eslint . --ext .ts",
     "check-types": "npx tsc --noEmit",
     "ncu": "npx ncu -e 2",
-    "commitlint": "npx --no -- commitlint --edit $1"
+    "prepare": "husky install"
   },
   "pre-commit": {
     "run": [
       "lint",
       "check-types",
-      "ncu",
-      "commitlint"
+      "ncu"
     ],
     "silent": true,
     "colors": true
