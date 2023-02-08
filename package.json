@@ -7,6 +7,8 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
     "@ethersproject/json-wallets": "^5.7.0",
     "@fastify/pre-commit": "^2.0.2",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
@@ -33,13 +35,15 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "check-types": "npx tsc --noEmit",
-    "ncu": "npx ncu -e 2"
+    "ncu": "npx ncu -e 2",
+    "commitlint": "npx --no -- commitlint --edit $1"
   },
   "pre-commit": {
     "run": [
       "lint",
       "check-types",
-      "ncu"
+      "ncu",
+      "commitlint"
     ],
     "silent": true,
     "colors": true
