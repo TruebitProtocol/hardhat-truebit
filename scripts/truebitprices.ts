@@ -1,10 +1,11 @@
-import { ethers, network } from 'hardhat';
+import hre, { ethers, network } from 'hardhat';
 import { getCurrentNetworkContracts } from '../utils/networkSelector';
 
 async function main(): Promise<void> {
   // contracts
-  const contracts = await getCurrentNetworkContracts(network);
-  console.log('Network :', network.name);
+  const contracts = await getCurrentNetworkContracts(hre);
+  console.log(`Ethereum network type: ${await hre.web3.eth.net.getNetworkType()}`);
+  console.log(`Hardhat network name: ${network.name}`);
 
   // License price
   const incentiveLayerContract = await ethers.getContractAt(contracts.incentiveLayer.abi, contracts.incentiveLayer.address);

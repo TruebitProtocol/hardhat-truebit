@@ -1,4 +1,4 @@
-import { ethers, run, web3, network } from 'hardhat';
+import hre, { ethers, run, web3 } from 'hardhat';
 import { expect } from 'chai';
 import sinon from 'ts-sinon';
 import { getCurrentNetworkContracts } from '../utils/networkSelector';
@@ -14,7 +14,7 @@ describe('Truebit tasks test', function () {
 
   this.beforeAll(async () => {
     spyLog = sinon.spy(console, 'info');
-    contract = await getCurrentNetworkContracts(network);
+    contract = await getCurrentNetworkContracts(hre);
     incentiveLayerContract = await ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
     truContract = await ethers.getContractAt(contract.tru.abi, contract.tru.address);
     purchaseContract = await ethers.getContractAt(contract.purchase.abi, contract.purchase.address);

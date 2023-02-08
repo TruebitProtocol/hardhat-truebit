@@ -25,7 +25,7 @@ task('license', 'Prints license price')
       //get accounts
       const accounts = await hre.ethers.getSigners();
       // contracts
-      const contract = await getCurrentNetworkContracts(hre.network);
+      const contract = await getCurrentNetworkContracts(hre);
 
       if (taskArgs.param1 == 'price') {
         const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
@@ -89,7 +89,7 @@ task('token', 'Token Operations: prices, purchase, deposit, transfer-eth, transf
       //get accounts
       const accounts = await hre.ethers.getSigners();
       // contracts
-      const contract = await getCurrentNetworkContracts(hre.network);
+      const contract = await getCurrentNetworkContracts(hre);
 
       if (taskArgs.mainOp == 'price') {
         // Tru price
@@ -236,7 +236,7 @@ task('balance', "Prints an account's balance")
     //get accounts
     const accounts = await hre.ethers.getSigners();
     // contracts
-    const contract = await getCurrentNetworkContracts(hre.network);
+    const contract = await getCurrentNetworkContracts(hre);
     const balance = await accounts[taskArgs.a].getBalance();
     console.info('balance: \n   Address: ', accounts[taskArgs.a].address);
     console.info('   Account: %s ETH', hre.ethers.utils.formatEther(balance));
@@ -253,7 +253,7 @@ task('balance', "Prints an account's balance")
 // Check Bonus per task
 task('bonus', 'Display current per task subsidy').setAction(async (taskArgs, hre) => {
   // contracts
-  const contract = await getCurrentNetworkContracts(hre.network);
+  const contract = await getCurrentNetworkContracts(hre);
   const incentivelayer = await hre.ethers.getContractAt(contract.incentiveLayer.abi, contract.incentiveLayer.address);
   const value = await incentivelayer.bonusTable();
 

@@ -32,8 +32,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "hardhat task",
-      "args": ["${input:taskNameAndArguments}", "--network", "${input:networkName}"],
+      "name": "hardhat task - balance",
+      "args": ["balance", "--a", "0"],
       "cwd": "${workspaceFolder}/",
       "skipFiles": ["<node_internals>/**"],
       "autoAttachChildProcesses": true,
