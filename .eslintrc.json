@@ -1,0 +1,30 @@
+{
+  "extends": ["plugin:@typescript-eslint/recommended", "prettier", "plugin:prettier/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": "tsconfig.json",
+    "sourceType": "script"
+  },
+  "plugins": ["@typescript-eslint", "sort-keys-fix", "const-case"],
+  "rules": {
+    "no-empty-pattern": "warn",
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksConditionals": true,
+        "checksVoidReturn": {
+          "arguments": false
+        }
+      }
+    ],
+    "camelcase": [2, { "properties": "always" }],
+    "const-case/uppercase": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "sort-keys": ["error", "asc", { "caseSensitive": true, "minKeys": 2, "natural": false }],
+    "sort-keys-fix/sort-keys-fix": "warn"
+  }
+}
