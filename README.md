@@ -520,6 +520,7 @@ In TruebitOS CLI, will display the entire execution, with Task Giver, Solver, an
 ## Truebit - Hardhat standard development environment
 
 This project is meant to test Truebit.
+This section suggest the use of VSCode, but you can use the IDE of your preference.
 
 ### Prerequisites:
 
