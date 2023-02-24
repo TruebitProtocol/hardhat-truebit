@@ -1,14 +1,15 @@
 {
   "name": "hardhat-truebit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "keywords": [],
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
     "@ethersproject/json-wallets": "^5.7.0",
-    "@fastify/pre-commit": "^2.0.2",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
@@ -21,6 +22,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "hardhat": "^2.12.6",
+    "husky": "^8.0.3",
     "npm-check-updates": "^16.6.5",
     "prettier": "^2.8.4",
     "ts-sinon": "^2.0.2",
@@ -33,15 +35,7 @@
   "scripts": {
     "lint": "npx eslint . --ext .ts",
     "check-types": "npx tsc --noEmit",
-    "ncu": "npx ncu -e 2"
-  },
-  "pre-commit": {
-    "run": [
-      "lint",
-      "check-types",
-      "ncu"
-    ],
-    "silent": true,
-    "colors": true
+    "ncu": "npx ncu -e 2",
+    "prepare": "husky install"
   }
 }
