@@ -53,7 +53,7 @@ Make sure you have the following packages properly installed
 
 # Install Truebit’s Hardhat Framework
 
-Clone Truebit’s Hardhat repository; it has pre-configured networks and TruebitOS commands built-in: [GitHub - TruebitProtocol/hardhat-truebit](https://github.com/TruebitProtocol/truebit-eth)
+Clone Truebit’s Hardhat repository; it has pre-configured networks and TruebitOS commands built-in: [GitHub - TruebitProtocol/hardhat-truebit](https://github.com/TruebitProtocol/hardhat-truebit)
 
 # Configuration Overview
 
